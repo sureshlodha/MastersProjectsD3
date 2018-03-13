@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<body>
+    <h1 style = "text-align:center; color:steelblue"><bold> Kansas Population Density, 2015</bold></h1>
+
+    
+<style>
+div {
+    color: #FFFF00;
+}
+</style>
+
+
+<div id="color", style="color:#FFFF00;float:right;">
+    <input name="colorChange" 
+           class="topLeft"
+           type="button" 
+           value="Change Legend Color" 
+           onclick="updateColor()" />
+</div>    
+<div id="option2", style="color:#FFFF00;float:right;">
+    <input name="updateButton" 
+           class="topLeft"
+           type="button" 
+           value="Toggle tracts Boundary" 
+           onclick="updateData2()" />
+</div>
+    
+
+    
+<svg width="960" height="800"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+
+<script>
+    
+var colorChange = false;
+var currentDataset = "ka-topo.json";
+var state = false;
+var tract = false;
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+var path = d3.geoPath();
+
+var color = d3.scaleThreshold()
+    .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
+    .range(d3.schemeOrRd[9]);
+
+var x = d3.scaleSqrt()
+    .domain([0, 4500])
+    .rangeRound([440, 950]);
+
+var g = svg.append("g")
+    .attr("class", "key")
+    .attr("transform", "translate(0,40)");
+
+g.selectAll("rect")
+  .data(color.range().map(function(d) {
+      d = color.invertExtent(d);
+      if (d[0] == null) d[0] = x.domain()[0];
+      if (d[1] == null) d[1] = x.domain()[1];
+      return d;
+    }))
+  .enter().append("rect")
+    .attr("height", 8)
+    .attr("x", function(d) { return x(d[0]); })
+    .attr("width", function(d) { return x(d[1]) - x(d[0]); })
+    .attr("fill", function(d) { return color(d[0]); });
+
+g.append("text")
+    .attr("class", "caption")
+    .attr("x", x.range()[0])
+    .attr("y", -6)
+    .attr("fill", "#000")
+    .attr("text-anchor", "start")
+    .attr("font-weight", "bold")
+    .text("Population per square mile");
+    
+    var button
+
+
+g.call(d3.axisBottom(x)
+    .tickSize(13)
+    .tickValues(color.domain()))
+  .select(".domain")
+    .remove();
+
+d3.json("ka-merge-topo.json", function(error, topology) {
+  if (error) throw error;
+
+  svg.append("g")
+    .selectAll("path")
+    .data(topojson.feature(topology, topology.objects.tracts).features)
+    .enter().append("path")
+      .attr("fill", function(d) { return color(d.properties.density); })
+      .attr("d", path);
+
+  svg.append("path")
+      .datum(topojson.feature(topology, topology.objects.counties))
+      .attr("fill", "none")
+      .attr("stroke", "#000")
+      .attr("stroke-opacity", 0.6)
+      .attr("d", path);
+
+
+});
+    
+
+    
+function updateData2() {
+    tract = !tract;
+    console.log(tract);
+    if(tract){
+            d3.json("ka-merge-topo.json", function(error, topology) {
+      if (error) throw error;
+
+      svg.append("g")
+        .selectAll("path")
+        .data(topojson.feature(topology, topology.objects.tracts).features)
+        .enter().append("path")
+          .attr("fill", function(d) { return color(d.properties.density); })
+          .attr("d", path);
+
+      svg.append("path")
+          .datum(topojson.feature(topology, topology.objects.tracts))
+          .attr("fill", "none")
+          .attr("stroke", "#000")
+          .attr("stroke-opacity", 0.5)
+          .attr("d", path);
+    });
+    }
+    else{
+                   d3.json("ka-merge-topo.json", function(error, topology) {
+      if (error) throw error;
+
+      svg.append("g")
+        .selectAll("path")
+        .data(topojson.feature(topology, topology.objects.tracts).features)
+        .enter().append("path")
+          .attr("fill", function(d) { return color(d.properties.density); })
+          .attr("d", path);
+
+      svg.append("path")
+          .datum(topojson.feature(topology, topology.objects.counties))
+          .attr("fill", "none")
+          .attr("stroke", "#000")
+          .attr("stroke-opacity", 0.5)
+          .attr("d", path);
+    }); 
+    }
+    //    // Get the data again
+
+    }
+    
+function updateColor(){ 
+    colorChange = !colorChange;
+          if(colorChange){
+        //If color changes from default, change to green scale
+              color.range(d3.schemeGreens[9]) ;
+      }
+        else{ color.range(d3.schemeOrRd[9])}
+    
+d3.json("ka-merge-topo.json", function(error, topology) {
+      if (error) throw error;
+  svg.append("g")
+    .selectAll("path")
+    .data(topojson.feature(topology, topology.objects.tracts).features)
+    .enter().append("path")
+      .attr("fill", function(d) { return color(d.properties.density); })
+      .attr("d", path);
+      svg.append("path")
+          .datum(topojson.feature(topology, topology.objects.counties))
+          .attr("fill", "none")
+          .attr("stroke", "#000")
+          .attr("stroke-opacity", 0.3)
+          .attr("d", path);});
+    
+    
+g.selectAll("rect")
+  .data(color.range().map(function(d) {
+      d = color.invertExtent(d);
+      if (d[0] == null) d[0] = x.domain()[0];
+      if (d[1] == null) d[1] = x.domain()[1];
+      return d;
+    }))
+    .attr("fill", function(d) { return color(d[0]); });
+//
+//g.append("text")
+//    .attr("class", "caption")
+//    .attr("x", x.range()[0])
+//    .attr("y", -6)
+//    .attr("fill", "#000")
+//    .attr("text-anchor", "start")
+//    .attr("font-weight", "bold")
+//    .text("Population per square mile");
+    
+
+
+g.call(d3.axisBottom(x)
+    .tickSize(13)
+    .tickValues(color.domain()))
+  .select(".domain")
+    .remove();
+
+}
+</script>
+    
+<!--
+nextColor = this.style.fill == "white" ? "magenta" : "white";
+        d3.select(this).style("fill", nextColor)
+-->
+
+        <p>My Gihub:<a href=https://hannabrahman.github.io/GeoMap/>Kansas Population Density</a> </p>
+    <h4>Created by Faeze Brahman </h4>    
+    <ul>
+      <li>Instructor: Suresh Lodha</li>
+      <li>CMPS 263: Data programming for Visualization</li>
+      <li>Winter 2018</li>
+    </ul>
+
+</body>

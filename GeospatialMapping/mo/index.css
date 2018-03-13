@@ -1,0 +1,35 @@
+body
+{
+	text-align:center;
+	vertical-align:middle;
+}
+
+p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height:1.7;
+}
+
+div.header{
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-size: 4.0rem;
+    line-height: 1.12;
+    letter-spacing: -0.9px;
+    margin-bottom: .5em;
+    margin-top: 0;
+    color: #222;
+    text-align: center;
+}
+
+div.footer{
+    background:#f9f9f9;
+    text-align:left;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    line-height:1.7;
+}
+
+#footerParagrah {
+    font-size: 13px;
+}
