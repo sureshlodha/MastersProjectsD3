@@ -1,0 +1,11 @@
+path {
+  stroke: #000;
+}
+
+g.active{
+  stroke-opacity: 0.3;
+}
+
+g.inactive{
+  stroke-opacity: 0;
+}

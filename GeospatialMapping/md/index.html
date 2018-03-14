@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<head><title>Maryland Population Density, 2018</title></head>
+<body><h1 style = "text-align:center;"><bold>Maryland Population Density, 2018</bold></h1></body>
+<svg width="960" height="780"></svg>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<div>
+    <input name = "changeButton"
+                   type = "button"
+                   value = "Change the legend"
+                   onclick = "change()" />
+    <input name = "stateButton"
+                   type = "button"
+                   value = "Toggle State Boundary"
+                   onclick = "togglestate()" />
+    <input name = "tractButton"
+                   type = "button"
+                   value = "Toggle Census Tract Boundaryry"
+                   onclick = "censusTract()" />
+</div>
+<h4><a href="https://cissy271.github.io/MarylandPopDensity/">Github Link</a></h4>
+<h4>Created by Yingjie Hu</h4>
+<h4>Instructor: Suresh Lodha</h4>
+<h4>CMPS 263: Data programming for Visualization,Winter 2018</h4>
+
+<script>
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+var path = d3.geoPath();
+
+var color = d3.scaleThreshold()
+    .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
+    .range(d3.schemeOrRd[9]);
+
+var x = d3.scaleSqrt()
+    .domain([0, 4500])
+    .rangeRound([440, 950]);
+
+var g = svg.append("g")
+    .attr("class", "key")
+    .attr("transform", "translate(0,40)");
+
+g.selectAll("rect")
+  .data(color.range().map(function(d) {
+      d = color.invertExtent(d);
+      if (d[0] == null) d[0] = x.domain()[0];
+      if (d[1] == null) d[1] = x.domain()[1];
+      return d;
+    }))
+    
+  .enter().append("rect")
+    .attr("height", 8)
+    .attr("x", function(d) { return x(d[0]); })
+    .attr("width", function(d) { return x(d[1]) - x(d[0]); })
+    .attr("fill", function(d) { return color(d[0]); });
+
+g.append("text")
+    .attr("class", "caption")
+    .attr("x", x.range()[0])
+    .attr("y", -6)
+    .attr("fill", "#000")
+    .attr("text-anchor", "start")
+    .attr("font-weight", "bold")
+    .text("Population per square mile");
+
+g.call(d3.axisBottom(x)
+    .tickSize(13)
+    .tickValues(color.domain()))
+  .select(".domain")
+    .remove();
+    
+
+d3.json("md-topoo.json", function(error, topology) {
+  if (error) throw error;
+
+  svg.append("g")
+    .selectAll("path")
+    .data(topojson.feature(topology, topology.objects.tracts).features)
+    .enter().append("path")
+      .attr("fill", function(d) { return color(d.properties.density); })
+      .attr("d", path);
+    
+  svg.append("path")
+      .datum(topojson.feature(topology, topology.objects.counties))
+      .attr("fill", "none")
+      .attr("stroke", "#000")
+      .attr("stroke-opacity", 0.3)
+      .attr("d", path);
+
+});
+    
+function change(){
+    
+    var activeChange = change.active ? false:true;
+        if (!activeChange){
+            color.range(d3.schemeOrRd[9]);
+        }
+    else{
+        color.range(d3.schemePurples[9]);  
+    }
+    change.active = activeChange;
+    
+    
+    g.selectAll("rect")
+  .data(color.range().map(function(d) {
+      d = color.invertExtent(d);
+      if (d[0] == null) d[0] = x.domain()[0];
+      if (d[1] == null) d[1] = x.domain()[1];
+      return d;
+    }))
+    .attr("fill", function(d) { return color(d[0]); });
+    
+d3.json("md-topoo.json", function(error, topology) {
+  if (error) throw error;
+
+  svg.append("g")
+    .selectAll("path")
+    .data(topojson.feature(topology, topology.objects.tracts).features)
+    .enter().append("path")
+      .attr("fill", function(d) { return color(d.properties.density); })
+      .attr("d", path);
+    
+  svg.append("path")
+      .datum(topojson.feature(topology, topology.objects.counties))
+      .attr("fill", "none")
+      .attr("stroke", "#000")
+      .attr("stroke-opacity", 0.3)
+      .attr("d", path);
+
+});
+    
+
+};
+    
+function togglestate(){
+   var activeToggle = togglestate.active ? false:true;
+    if(!activeToggle){
+        newtoggleOpacity = 0;
+    }else{
+    newtoggleOpacity = 1;
+    }
+    
+    console.log(activeToggle)
+    togglestate.active = activeToggle;
+    
+    d3.json("md-topoo.json", function(error, topology) {
+  if (error) throw error;
+
+  svg.append("g")
+    .selectAll("path")
+    .data(topojson.feature(topology, topology.objects.tracts).features)
+    .enter().append("path")
+      .attr("fill", function(d) { return color(d.properties.density); })
+      .attr("d", path);
+    
+  svg.append("path")
+      .datum(topojson.feature(topology, topology.objects.counties))
+      .attr("fill", "none")
+      .attr("stroke", "#000")
+      .attr("stroke-opacity", 0.3)
+      .attr("d", path);
+        
+  svg.append("path")
+      .datum(topojson.feature(topology, topology.objects.border))
+      .attr("fill", "none")
+      .attr("stroke", "#000")
+      .attr("stroke-opacity", newtoggleOpacity)
+      .attr("d", path);
+});
+}
+    
+
+function censusTract(){
+
+    var activeTract = censusTract.active ? false:true;
+    if (!activeTract){
+            newOpacity = 0;
+        }
+    else{
+        newOpacity = 0.5;  
+    }
+    console.log(activeTract)
+    censusTract.active = activeTract;
+    
+d3.json("md-topoo.json", function(error, topology) {
+  if (error) throw error;
+
+  svg.append("g")
+    .selectAll("path")
+    .data(topojson.feature(topology, topology.objects.tracts).features)
+    .enter().append("path")
+      .attr("fill", function(d) { return color(d.properties.density); })
+      .attr("d", path);
+    
+  svg.append("path")
+      .datum(topojson.feature(topology, topology.objects.counties))
+      .attr("fill", "none")
+      .attr("stroke", "#000")
+      .attr("stroke-opacity", 0.3)
+      .attr("d", path);
+    
+  svg.append("path")
+      .datum(topojson.feature(topology, topology.objects.tracts))
+      .attr("fill", "none")
+      .attr("stroke", "#000")
+      .attr("stroke-opacity", newOpacity)
+      .attr("d", path);
+    
+
+    
+});
+}
+
+
+</script>

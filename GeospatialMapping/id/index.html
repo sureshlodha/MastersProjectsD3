@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Idaho Population Density, 2016</title>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+        <script src="https://d3js.org/topojson.v2.min.js"></script>
+    </head>
+    <body>
+        <h1>Idaho Population Density</h1>
+        <svg width="960" height="960"></svg>
+        <script>
+        var svg = d3.select("svg"),
+            width = +svg.attr("width"),
+            height = +svg.attr("height");
+
+        var path = d3.geoPath();
+        var rd = d3.scaleThreshold()
+            .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
+            .range(d3.schemeOrRd[9]);
+            console.log(rd)
+        var bu = d3.scaleThreshold()
+            .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
+            .range(d3.schemeGnBu[9]);
+            var color =rd;
+
+        var x = d3.scaleSqrt()
+            .domain([0, 4500])
+            .rangeRound([440, 950]);
+
+        var g = svg.append("g")
+            .attr("class", "key")
+            .attr("transform", "translate(0,40)");
+
+        g.selectAll("rect")
+          .data(color.range().map(function(d) {
+              d = color.invertExtent(d);
+              if (d[0] == null) d[0] = x.domain()[0];
+              if (d[1] == null) d[1] = x.domain()[1];
+              return d;
+            }))
+            .attr("class", "rect")
+          .enter().append("rect")
+            .attr("height", 8)
+            .attr("x", function(d) { return x(d[0]); })
+            .attr("width", function(d) { return x(d[1]) - x(d[0]); })
+            .attr("fill", function(d) { return color(d[0]); });
+
+        g.append("text")
+            .attr("class", "caption")
+            .attr("x", x.range()[0])
+            .attr("y", -6)
+            .attr("fill", "#000")
+            .attr("text-anchor", "start")
+            .attr("font-weight", "bold")
+            .text("Population per square mile");
+
+        g.call(d3.axisBottom(x)
+            .tickSize(13)
+            .tickValues(color.domain()))
+          .select(".domain")
+            .remove();
+
+        d3.json("ID.json", function(error, topology) {
+          if (error) throw error;
+
+          svg.append("g")
+            .selectAll("path")
+            .data(topojson.feature(topology, topology.objects.tracts).features)
+            .enter().append("path")
+            .attr("class", "density")
+              .attr("fill", function(d) { return color(d.properties.density); })
+              .attr("d", path);
+
+          svg.append("path")
+              .datum(topojson.feature(topology, topology.objects.counties))
+              .attr("fill", "none")
+              .attr("stroke", "#000")
+              .attr("stroke-opacity", 1)
+              .attr("d", path);
+
+          svg.append("path")
+              .datum(topojson.mesh(topology, topology.objects.tracts, function(a, b) { return a !== b; }))
+              .attr("class", "tracts-boundary")
+              .attr("id", "tracts")
+              .attr("fill", "none")
+              .attr("stroke", "#000")
+              .attr("stroke-opacity", 0)
+              .attr("d", path);
+
+             svg.append("path")
+              .datum(topojson.feature(topology, topology.objects.states))
+              .attr("class", "states-boundary")
+              .attr("id", "states")
+              .attr("fill", "none")
+              .attr("stroke", "#000")
+              .attr("stroke-opacity", 0)
+              .attr("d", path);
+        });
+
+        function toggletracts(){var active   = tracts.active ? false : true,
+                newOpacity = active ? 0.7 : 0;
+                // Hide or show the elements
+                d3.select(".tracts-boundary").attr("stroke-opacity", newOpacity);
+                // Update whether or not the elements are active
+                tracts.active = active;}
+
+        function togglestates(){var active   = states.active ? false : true,
+                newOpacity = active ? 0.7 : 0;
+                // Hide or show the elements
+                d3.select(".states-boundary").attr("stroke-opacity", newOpacity);
+                // Update whether or not the elements are active
+                states.active = active;}
+
+        function change(){var color = bu;
+                          d3.selectAll("rect").remove();
+                          g.selectAll("rect")
+                              .data(color.range().map(function(d) {
+                              d = color.invertExtent(d);
+                              if (d[0] == null) d[0] = x.domain()[0];
+                              if (d[1] == null) d[1] = x.domain()[1];
+                              return d;
+                          }))
+                              .attr("class", "rect")
+                              .enter().append("rect")
+                              .attr("height", 8)
+                              .attr("x", function(d) { return x(d[0]); })
+                              .attr("width", function(d) { return x(d[1]) - x(d[0]); })
+                              .attr("fill", function(d) { return color(d[0]); });
+                          d3.select("svg")
+                              .selectAll(".density")
+                              .attr("fill", function(d) { return color(d.properties.density); });
+        }
+
+        </script>
+        <div>
+            <input name="togglet" 
+                   type="button" 
+                   value="Toggle Census Tract Boundary" 
+                   onclick="toggletracts()" />
+
+            <input name="toggles" 
+                   type="button" 
+                   value="Toggle State Boundary" 
+                   onclick="togglestates()" />
+
+            <input name="changecolor" 
+                   type="button" 
+                   id=changecolor
+                   value="Change Legend Color"
+                   onclick="change()"/>
+
+        </div>
+        <li><a href="https://diyangg.github.io/Geo-Spatial-Mapping/">Github Link</a></li>
+        <li>Instructor: Suresh Lodha</li>
+        <li>CMPS 263: Data programming for Visualization</li>
+        <li>Winter 2018</li>
+    </body>
+</html>

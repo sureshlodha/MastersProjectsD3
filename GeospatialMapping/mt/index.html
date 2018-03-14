@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+        <title>Montana Population Density, 2016</title>
+</head>
+<body>
+        <h1><b>Montana Population Density, 2016</b></h1>
+
+        <button onclick="changeColor()">Change Color</button><br>
+        <button onclick="changeColor()">Toggle State Boundary</button><br>
+        <button onclick="changeColor()">Toggle Census Boundaries</button><br>
+        <div id="red">
+        	<img id="pic" src="mt-red.svg" align="middle" width="960" height="1000">
+		</div>
+		<ul>
+                <li> GitHub: <a href="https://dhawaljoh.github.io/CMPS263/MontanaPopDensity.html" target="_blank">https://dhawaljoh.github.io/CMPS263/MontanaPopDensity.html</a></li>
+                <li>Name: Dhawal Joharapurkar</li>
+                <li>Instructor: Suresh Lodha</li>
+                <li>CMPS 263: Data Programming for Visualization, Winter 2018</li>
+        </ul>
+
+<script>
+    var r = true;
+function changeColor() {
+    var pic = document.getElementById("pic");
+
+    console.log(r)
+    if (r) {
+        r = false;
+        pic.src = "mt-blue.svg";
+    } else {
+        r = true;
+        pic.src = "mt-red.svg";
+    }
+}
+</script>
+
+</body>
+</html>
