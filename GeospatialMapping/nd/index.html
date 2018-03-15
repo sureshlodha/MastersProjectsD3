@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<head>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+</head>
+
+<body>
+    <style>
+        .button {
+            margin-left: 50px;
+        }
+
+    </style>
+    <h1 style="text-align: center">Population Density of North Dakota, 2016</h1>
+    <p id="option" style="text-align: center; margin-top: 50px">
+        <input id="colorButton" class="button" name="colorButton" type="button" value="Change Legend Color" onclick="changeLegendColor()" />
+
+        <input id="stateButton" class="button" name="stateButton" type="button" value="Toggle State Boundary" onclick="toggleStateBoundary()" />
+
+        <input id="tractButton" class="button" name="tractButton" type="button" value="Toggle Tract Border" onclick="toggleTractBorder()" />
+
+    </p>
+    <svg width="960" height="750" viewBox="0,150,960,750" style="margin-left: auto; margin-right: auto; display: block"></svg>
+
+    <p><a href="https://omalik2.github.io/cmps263-northdakota/index.html">Github Pages</a></p>
+    <p>Created By Osman Malik<br/>Instructor: Suresh Lodha<br/>CMPS 263: Data programming for Visualization<br/>Winter 2018</p>
+
+
+    <script>
+        var BORDER_OPACITY = 0.02;
+
+        var keyArray = [1, 10, 50, 200, 500, 1000, 2000, 4000];
+        var color = d3.scaleThreshold().domain(keyArray).range(d3.schemeOrRd[9]);
+
+        var svg = d3.select("svg");
+
+        d3.json("nd.json", function(error, nd) {
+            if (error) throw error;
+
+            var counties = topojson.feature(nd, nd.objects.counties);
+            var tracts = topojson.feature(nd, nd.objects.tracts);
+
+            var county_border = topojson.mesh(nd, nd.objects.counties, function(a, b) {
+                return a !== b;
+            });
+
+            var state_border = topojson.mesh(nd, nd.objects.counties, function(a, b) {
+                return a === b;
+            });
+
+            var tract_border = topojson.mesh(nd, nd.objects.tracts, function(a, b) {
+                return a !== b;
+            });
+
+            var path = d3.geoPath();
+
+
+            // Color in Tracts
+            svg.append("g")
+                .attr("class", "tracts-color")
+                .selectAll("path")
+                .data(tracts.features)
+                .enter().append("path")
+                .attr("d", path)
+                .style("fill", function(d) {
+                    return color(d.properties.density);
+                });
+
+            svg.append("g")
+                .attr("class", "state-border")
+                .selectAll("path")
+                .data(counties.features)
+                .enter().append("path")
+                .attr("d", path(state_border))
+                .style("fill", "none")
+                .style("stroke", "#000")
+                .style("stroke-width", 2)
+                .style("stroke-opacity", 0);
+
+            svg.append("g")
+                .attr("class", "counties-border")
+                .selectAll("path")
+                .data(counties.features)
+                .enter().append("path")
+                .attr("d", path(county_border))
+                .style("fill", "none")
+                .style("stroke", "#000")
+                .style("stroke-width", 2)
+                .style("stroke-opacity", BORDER_OPACITY);
+
+            svg.append("g")
+                .attr("class", "tract-border")
+                .selectAll("path")
+                .data(tracts.features)
+                .enter().append("path")
+                .attr("d", path(tract_border))
+                .style("fill", "none")
+                .style("stroke", "#000")
+                .style("stroke-width", 1)
+                .style("stroke-opacity", 0);
+
+        });
+
+        // Key
+        var x = d3.scaleSqrt()
+            .domain([0, 4000])
+            .rangeRound([500, 900]);
+
+        var g = svg.append("g")
+            .attr("class", "key")
+            .attr("transform", "translate(0,825)");
+
+        g.selectAll("rect")
+            .data(color.range().map(function(d) {
+                d = color.invertExtent(d);
+                if (d[0] == null) d[0] = x.domain()[0];
+                if (d[1] == null) d[1] = x.domain()[1];
+                return d;
+            }))
+            .enter().append("rect")
+            .attr("height", 8)
+            .attr("x", function(d) {
+                return x(d[0]);
+            })
+            .attr("width", function(d) {
+                return x(d[1]) - x(d[0]);
+            })
+            .attr("fill", function(d) {
+                return color(d[0]);
+            });
+
+        g.append("text")
+            .attr("class", "caption")
+            .attr("x", x.range()[0])
+            .attr("y", -6)
+            .attr("fill", "#000")
+            .attr("text-anchor", "start")
+            .attr("font-weight", "bold")
+            .text("Population Per Square Mile");
+
+        g.call(d3.axisBottom(x)
+                .tickSize(8)
+                .tickFormat(function(x, i) {
+                    return x;
+                })
+                .tickValues(color.domain()))
+            .select(".domain")
+            .remove();
+
+
+
+
+        var color_flag = true,
+            boundary_flag = false,
+            tracts_flag = false;
+
+        function changeLegendColor() {
+            color_flag = !color_flag;
+
+            if (color_flag) {
+                color = d3.scaleThreshold().domain(keyArray).range(d3.schemeOrRd[9]);
+            } else {
+                color = d3.scaleThreshold().domain(keyArray).range(d3.schemeGnBu[9]);
+            }
+
+            // Update the fill
+            d3.selectAll(".tracts-color path").style("fill", function(d) {
+                return color(d.properties.density);
+            });
+            d3.selectAll(".key rect").style("fill", function(d) {
+                return color(d[0]);
+            });
+        }
+
+        function toggleStateBoundary() {
+            boundary_flag = !boundary_flag;
+
+            var selection = d3.selectAll(".state-border path");
+
+            if (boundary_flag) {
+                selection.style("stroke-opacity", BORDER_OPACITY);
+            } else {
+                selection.style("stroke-opacity", 0);
+            }
+        }
+
+        function toggleTractBorder() {
+            tracts_flag = !tracts_flag;
+
+            var selection = d3.selectAll(".tract-border path");
+
+            if (tracts_flag) {
+                selection.style("stroke-opacity", BORDER_OPACITY / 2);
+            } else {
+                selection.style("stroke-opacity", 0);
+            }
+        }
+
+    </script>
+
+</body>

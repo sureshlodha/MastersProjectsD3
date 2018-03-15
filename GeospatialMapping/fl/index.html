@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+
+<head> 
+    <title>Florida Population Density, 2016</title>
+    <h1 style = "text-align:center; color:#000000">
+    <bold>Florida Population Density, 2016</bold>
+    </h1>
+</head>
+
+<svg width="960" height="1100"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<body>
+<script>
+//declration ： this assignment is finished under the help of Ziye Han and Boyu Zhang
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+    
+var path = d3.geoPath();
+    
+var color = d3.scaleThreshold()      //create a mapping relation between intervals of value and several colors
+    .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])     
+    .range(d3.schemeOrRd[9]);
+    
+var x = d3.scaleSqrt() //create a mapping relation defined by a sqrt function, similar to scaleLinear()
+    .domain([0, 4500])
+    .rangeRound([440, 950]);
+    
+var g = svg.append("g")
+    .attr("class", "key")
+    .attr("transform", "translate(-200,970)");
+    
+g.selectAll("rect")                              //this function appends the legend image
+  .data(color.range().map(function(d) {    //self-defined map function creates new array based on color.range() and load the new array into data() function
+      d = color.invertExtent(d);   // d contains color. map function map a specific range to a specific color
+      console.log(d);
+      if (d[0] == null) d[0] = x.domain()[0];   //deal with [undefined, 1]
+      if (d[1] == null) d[1] = x.domain()[1];   //deal with [4000, undefined]
+      return d;
+    }))
+  .enter().append("rect")
+    .attr("height", 8)
+    .attr("x", function(d) { return x(d[0]); })   // because x uses scaleSqrt(), legend doesn't contain equal length part. Some are longer and some are                                                     shorter
+    .attr("width", function(d) { return x(d[1]) - x(d[0]); })
+    .attr("fill", function(d) { return color(d[0]); });
+    
+g.append("text")                   //this appends the legend text
+    .attr("class", "caption")
+    .attr("x", x.range()[0])
+    .attr("y", -6)
+    .attr("fill", "#000")
+    .attr("text-anchor", "start")
+    .attr("font-weight", "bold")
+    .text("Population per square mile");
+    
+g.call(d3.axisBottom(x)          //this function appends legend axis
+    .tickSize(13)
+    .tickValues(color.domain()))
+  .select(".domain")
+    .remove();
+    
+d3.json("florida-topo.json", function(error, topology) {    //create the map itself
+  if (error) throw error;
+  svg.append("g")           
+    .selectAll("path")     //append census tracts boundries
+    .data(topojson.feature(topology, topology.objects.tracts).features)
+    .enter().append("path")
+      .attr("fill", function(d) { return color(d.properties.density); })    //use colour function defined above to fill correct colour
+      .attr("d", path);
+ 
+    svg.append("path")                    //append county boundries
+      .datum(topojson.feature(topology, topology.objects.counties))
+      .attr("fill", "none")
+      .attr("stroke", "#000")
+      .attr("stroke-opacity", 0.3)
+      .attr("d", path)
+      .attr("id", "originalCounties");
+    
+    
+});
+    
+    
+    var count = 0;
+    function changeLegendColor() {
+            var newColor = d3.scaleThreshold()
+                .domain([1, 10, 50, 200, 500, 1000, 2000, 4000]);
+            if (count == 0) {           //set the colour based on counter  
+                newColor.range(d3.schemePurples[9]);
+            } else {
+                newColor.range(d3.schemeOrRd[9]);
+            }
+                
+            if(count == 0){     //set the counter to be different
+                count = 1;
+            }else{
+                count = 0;
+            }
+            svg.selectAll("rect").attr("fill", function(d) {
+                return newColor(d[0]);
+            });
+            svg.selectAll("path").attr("fill", function(d) {
+                return newColor(d.properties.density);
+            });
+            
+            
+    }
+    
+    
+var bCount = 0;
+function toggleStateBoundary(){
+    if (bCount == 0){
+          d3.selectAll("#originalCounties").remove(); 
+
+          d3.json("florida-merge-topo.json",function(error, topology){
+              if (error) throw error;
+
+          svg.append("path")                   
+          .datum(topojson.feature(topology, topology.objects.counties))
+          .attr("fill", "none")
+          .attr("stroke", "#000")
+          .attr("stroke-opacity", 0.3)
+          .attr("stroke-width", 2)
+          .attr("d", path)
+          .attr("id", "addedCounties");
+          });
+         d3.select("#originalCounties").remove();
+    }
+    else{                                      
+        d3.select("#originalCounties").remove();
+        d3.select("#addedCounties").remove();
+        d3.json("florida-topo.json", function(error, topology) {
+          if (error) throw error;
+          svg.append("path")                    
+              .datum(topojson.feature(topology, topology.objects.counties))
+              .attr("fill", "none")
+              .attr("stroke", "#000")
+              .attr("stroke-opacity", 0.3)
+              .attr("d", path)
+              .attr("id", "originalCounties");
+        });
+}
+    
+    if (bCount == 0) {
+        bCount = 1;
+    }else{
+        bCount = 0;
+    }
+};
+    
+    var tCount = 0;
+    function toggleCensusTractBoundary() {
+            if (tCount == 0) {
+                d3.json("florida-topo.json", function(error, topology) {
+                    if (error) throw error;
+                    svg.append("path")
+                        .datum(topojson.feature(topology, topology.objects.tracts))
+                        .attr("id", "censusTract")
+                        .attr("fill", "none")
+                        .attr("stroke", "#000")
+                        .attr("stroke-opacity", 0.3)
+                        .attr("stroke-width", 2)
+                        .attr("d", path);
+                });
+            } else {
+                d3.select("#censusTract").remove();
+            }
+            if (tCount == 0) {
+                tCount = 1;
+            }else{
+                tCount = 0;
+            }
+    }
+    
+    
+</script>
+    
+ <h1 >
+     <button id="changeLegendColor" onclick="changeLegendColor()">Change Legend Color</button>
+     <button id="toggleStateBoundary" onclick="toggleStateBoundary()">Toggle State Boundary</button>
+     <button id="toggleCensusTractBoundary" onclick="toggleCensusTractBoundary()">Toggle Census Tract Boundary</button>
+</h1>  
+    
+
+
+    <h>
+    <ul><a href="https://katrina95.github.io/">Github Link</a></ul>
+    <ul>Wenting Zhu</ul>
+    <ul>Instructor: Suresh Lodha</ul>
+    <ul>CMPS 263: Data programming for VisualizationWinter 2018</ul></h>
+    
+</body>

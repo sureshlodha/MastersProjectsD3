@@ -1,0 +1,22 @@
+/*  
+code for divs within divs
+https://stackoverflow.com/questions/6208214/placing-3-divs-side-by-side
+*/
+#cointainer{
+    width: 100%;
+    font-size: 12px;
+    overflow: hidden; /* contain floated elements */
+    background: #ccc
+}
+#legendcolor {
+    float: left; 
+    width: 33%;
+}
+#stateboundary { 
+    float: left;
+    width: 33%;
+}
+#tractboundary{
+    float: left;
+    width: 33%;
+}
