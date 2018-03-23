@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Pension Problem in Mainland China</title>
+    <link href="index.css" rel="stylesheet"/>
+    <link href="map.css" rel="stylesheet"/>
+    <link href="popuPyramid.css" rel="stylesheet"/>
+    <link href="prediction.css" rel="stylesheet"/>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.5/d3-legend.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+</head>
+<body>
+<h1 style="text-align:center;">Pension Problem in Mainland China</h1>
+<div style=" text-align:left">
+    <p style="margin-left: 10% ; margin-right: 10%">China’s population is growing old at a pretty fast rate and its looming demographic shift presents considerable
+        social and economic challenges, especially for the pension system. Because the number of Chinese retirees is
+        fast increasing and the poor investment of pension fund in the past few years, some provinces in China alreay
+        have been in a serious pension problem. Many chinese people now concern about their life after retirement.</p>
+</div>
+<div style="height: 800px">
+    <div id = 'left' style = 'width:50%'>
+        <div>
+            <input type="button" class="intro" value="Introduction" style="margin-left: 40px" onclick="btnAction()">
+            <!-- 弹出层-->
+            <div id="hid" align="center"
+                 style="position:fixed;left:10px;top:250px;border-radius: 6px;width:200px;height: 350px;background-color: lightgrey;display:none;line-height:25px;color:black;">
+                <!-- 弹出信息 -->
+                <span id="text" >The pension system in China is a part of social security system.
+                In China’s pension system, employee needs to contribute 8% of their salary to buy pension insurance,
+                    and the employer (usually is a company) will contribute 20%. If the employee has already contributed
+                    15 years or more, the employee is eligible to get the pension (will be paid every month) when he or
+                    she reached the retirement age.
+                </span>
+            </div>
+            <script>
+                function btnAction()
+                {
+                    document.getElementById("hid").style.display = "";//显示弹出层
+                    document.getElementById("text").innerHTML = mes;//设置信息内容
+                    setTimeout(function() {
+                        document.getElementById("hid").style.display = "none";//关闭弹出层
+                    }, 5);
+                }
+            </script>
+
+
+        </div>
+        <div id = 'map'>
+            <script type="text/javascript" src="map.js"></script>
+        </div>
+        <div id = 'current_chart'>
+
+        </div>
+    </div>
+    <div id = 'right' style = 'width:40%'>
+        <div id = 'population_pyramid'>
+            <script type="text/javascript" src="popuPyramid.js"></script>
+        </div>
+        <div id = 'prediction_chart'>
+            <script type="text/javascript" src="prediction.js"></script>
+        </div>
+    </div>
+</div>
+<div id='appendix'>
+    <p><b>Created by</b>: &nbsp;&nbsp;&nbsp;Yangjie Tao, Bo-Syun Liao and Yueting Chen in collaboration with Professor Lodha <br><b>Email:</b>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ytao4@ucsc.edu, boliao@ucsc.edu, ychen405@ucsc.edu<br> <b>Designed
+            for:</b> &nbsp;CMPS263 Data Visualization, 2018 winter<br>
+        <b>Github Link:</b>&nbsp;&nbsp;<a href="https://github.com/HoppipollaTao/Pension_Problem_In_China">Pension
+            Problem In China</a>
+    </p>
+    <table>
+        <tr id="header">
+            <td class="firstcolumn"><b>Files:</b></td>
+            <td class="secondcolumn"><b>Data Sources:</b></td>
+            <td class="thirdcolumn"><b>Visualization Sources:</b></td>
+            <td class="fourthcolumn"><b>Code Sources:</b></td>
+        </tr>
+        <!--<tr>-->
+            <!--<td class="firstcolumn"></td>-->
+            <!--<td class="secondcolumn"></td>-->
+            <!--<td class="thirdcolumn"></td>-->
+        <!--</tr>-->
+        <tr>
+            <td class="firstcolumn">index.html</td>
+            <td class="secondcolumn"><a href="http://www.stats.gov.cn/">National Bureau of Statistics of China</a></td>
+            <td class="thirdcolumn"><a
+                    href="https://www.bloomberg.com/news/articles/2017-06-26/china-s-pension-gap-is-growing-and-nobody-wants-to-talk-about-it">Bloomberg:
+                China’s Pension Gap Is Growing as Aging Becomes Economic Risk</a></td>
+            <td class="fourthcolumn"><a href="https://codepen.io/brantwills/pen/igsoc">https://codepen.io/brantwills/pen/igsoc</a> </td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">index.css</td>
+            <td class="secondcolumn"><a href="http://www.mohrss.gov.cn"> Ministry of Human Resources and Social Security
+                of China</a></td>
+            <td class="thirdcolumn"><a href="https://chinapower.csis.org/aging-problem/">Does China have an aging
+                problem?</a></td>
+            <td class="fourthcolumn"><a href="https://bl.ocks.org/mbostock/6452972">https://bl.ocks.org/mbostock/6452972</a></td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">index.js</td>
+            <td class="secondcolumn"></td>
+            <td class="thirdcolumn"><a href="https://sureshlodha.github.io/CMPS263_Win2017/ChinaPopulationDensity/">ChinaPopulationDensity</a>
+            </td>
+            <td class="fourthcolumn"><a href="http://d3-legend.susielu.com/">http://d3-legend.susielu.com/</a></td>
+        </tr>
+        <tr>
+            <td class="firstcolumn"></td>
+            <td class="secondcolumn"></td>
+            <td class="thirdcolumn"><a href="https://sureshlodha.github.io/CMPS263_Win2017/BuyingHomeBeijing/">BuyingHomeBeijing</a>
+            </td>
+            <td class="fourthcolumn"><a href="http://plnkr.co/edit/NRL5lgkPE1C8ANCiRinr?p=preview">http://plnkr.co/edit/NRL5lgkPE1C8ANCiRinr?p=preview</a></td>
+        </tr>
+        <tr>
+            <td class="firstcolumn"></td>
+            <td class="secondcolumn"></td>
+            <td class="thirdcolumn"><a href="https://sureshlodha.github.io/CMPS165_Fall2016_FinalProjects/ChinaWealth/">ChinaWealth</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">map.css</td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">map.js</td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">population.csv</td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">popuPyrmid.css</td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">popuPyrmid.js</td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">prediction.css</td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">prediction.csv</td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">prediction.js</td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">china.geajson</td>
+        </tr>
+        <tr>
+            <td class="firstcolumn">balance_per_capita.csv</td>
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>

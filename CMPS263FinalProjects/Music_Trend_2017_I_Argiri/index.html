@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>CMPS 263 Final Project</title>
+    <link rel="stylesheet" type="text/css" href="style.css">   
+    <style>
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  padding: 5px;
+  background-color: #ACACE6;
+  border: 2px solid #766EC8;
+color: aliceblue;
+    
+}
+#background { 
+    background-color: lightgrey;
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: contain;
+}
+.column {
+    float: left;
+    width: 25%;
+    padding: 10px;
+    
+}
+ * {
+    box-sizing: border-box;
+}
+        
+        
+ div.a {
+    text-align: center;
+}
+
+div.b {
+    text-align: left;
+}
+
+div.c {
+    text-align: right;
+}
+ 
+</style>
+    
+</head>
+<body >
+    <div class = "sticky"><h1><b><center><strong>Visualization of Music Trends Across the Globe in 2017</strong></center></b></h1> </div>
+    
+    <div id="report" class = "no-print"></div>
+    <div id="tooltip" class = "no-print"></div>
+    <div id="slider"></div>
+    <div id="map">
+    
+    <script type="text/javascript" src="http://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="http://d3js.org/topojson.v1.min.js"></script></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+    <script type="text/javascript" src = "music.js">
+    
+    
+    </script>
+    
+    
+    <div id="background">
+                
+            <div class = "b">
+                <h3><b>Created by:</b></h3> 
+                <p>Arghyadeep Giri<br>email: argiri@ucsc.edu<br>
+                <a href="https://github.com/Arghyadeep/Understanding-Music-Trend-D3" target="_blank">Github Link</a>
+                </p>
+
+                <h3><b>Designed for:</b></h3>
+                <p>CMPS 263 (Winter 2018) under the guidance of Prof. Suresh Lodha</p>
+            </div>
+
+            <div class="row">
+                <div class="column" style="background-color:#aaa;">
+                <h3>Files Submitted</h3>
+                <p>index.html<br>index.css</p>
+            </div>
+                
+            <div class="column" style="background-color:#bbb;">
+                <h3>Data Sources</h3>
+                <p><a href="http://www.whalereport.com/#/app/chart/spotify/us" target="_blank">visit whale report to access data</a><br>
+                <a href=https://www.billboard.com/charts/artist-100 target="_blank">visit billboard for top 100 artists data with time</a><br>
+                </p>
+            </div>
+            </div>
+                
+            <div class="row">
+            <div class="column" style="background-color:#aaa;">
+                <h3>Relevant Visualization Sources</h3>
+                <p><a href="https://www.musicmap.info/" target="_blank">visualization for music genre prevalence with time</a><br>
+                <a href="https://flowingdata.com/2017/08/07/music-preference-geography/" target="_blank">spatial data visualization</a>
+                </p>
+            </div>
+                
+            <div class="column" style="background-color:#bbb;">
+            <h3>Code Sources</h3>
+            <p><a href="http://duspviz.mit.edu/d3-workshop/mapping-data-with-d3/" target="_blank">points on maps code</a><br>
+                <a href="http://bl.ocks.org/tjdecke/5558084" target="_blank">heatmaps for trend</a>
+              </p>
+                </div>
+            </div>
+            </div>
+</body>
+</html>
