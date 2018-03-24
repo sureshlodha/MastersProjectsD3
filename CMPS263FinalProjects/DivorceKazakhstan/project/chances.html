@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+  <style> /* set the CSS */
+    .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 2px;
+    }
+  </style>
+  <head>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+  </head>
+  <body>
+    <h1>Divorce to Marrage ratio</h1>
+    <script>
+      // set the dimensions and margins of the graph
+      var line_margin = {top: 20, right: 150, bottom: 30, left: 100},
+          line_width = line_margin.left - line_margin.right,
+          line_height = line_margin.top - line_margin.bottom;
+
+      var svg = d3.select("body").append("svg")
+          .attr("width", line_width + line_margin.left + line_margin.right)
+          .attr("height", line_height + line_margin.top + line_margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + line_margin.left + "," + line_margin.top + ")");
+
+      //parse time funciton
+      var parseTime = d3.timeParse("%Y");
+
+      //set ranges
+      var x = d3.scaleTime().range([0, line_width]);
+      var y = d3.scaleLinear().range([line_height,0]);
+
+      //define the line
+      var line = d3.line()
+                   .curve(d3.curveBasis)
+                   .x(function(d) {return x(d.year);})
+                   .y(function(d) {return y(d.ratio);})
+
+      d3.csv("./chances.csv", function(data) {
+        var col_names = data["columns"];
+        col_names.shift();
+        
+        max_num = 0;
+        region_data = {};
+        for (var i=0; i<data.length; i++) {
+          region = data[i].Region;
+          region_data[region] = [];
+          for (var key in data[i]) {
+            if (typeof data[i][key] !== 'function' && parseFloat(data[i][key])) {
+              region_data[region].push({"year": parseTime(parseInt(key)), "ratio": parseFloat(data[i][key])});
+              if (max_num<parseFloat(data[i][key])) {
+                max_num = parseFloat(data[i][key]);
+              }
+            }
+          }
+        }
+        console.log(max_num); 
+        console.log(region_data);
+        for (var i=0; i<col_names.length; i++) {
+          col_names[i] = parseTime(parseInt(col_names[i]));
+        }
+
+        x.domain(d3.extent(col_names));
+        y.domain([0, max_num]);
+        
+        //axis
+        svg.append("g").attr("transform", "translate(0," + line_height + ")")
+                       .call(d3.axisBottom(x));
+        svg.append("g").call(d3.axisLeft(y));
+
+
+        //add lines
+        for (var reg in region_data) {
+          if (typeof region_data[reg] !== 'function') {
+              var path = svg.append("path").data([region_data[reg]])
+                                .attr("class", "line")
+                                .attr("d", line)
+                                .style("stroke", function (d) {return "#eee";});
+
+              totalLength = path.node().getTotalLength();
+              console.log(totalLength); 
+              path.attr("stroke-dasharray", totalLength + " " + totalLength)
+                  .attr("stroke-dashoffset", totalLength)
+                  .transition()
+                    .duration(2000)
+                    .ease(d3.easeLinear)
+                    .attr("stroke-dashoffset", 0);
+
+              svg.append("text")
+                 .attr("transform", function(d) {
+                                      last_index = region_data[reg].length-1;
+                                      last_data_point = region_data[reg][last_index];
+                                      return "translate("+x(last_data_point["year"])+","+y(last_data_point["ratio"])+")";
+                                    })
+                 .text(reg)
+          }
+        }        
+      });
+
+      svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate("+ -50 +","+(line_height/2)+")rotate(-90)")  
+            .text("Divorces to Marriages ratio");
+
+      
+    </script>
+  </body>
+</html>

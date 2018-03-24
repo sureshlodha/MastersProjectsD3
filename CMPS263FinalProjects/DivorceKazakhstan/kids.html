@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<style>
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+#main {
+  width: 960px;
+}
+.axis .domain {
+  display: none;
+}
+</style>
+<div id="main">
+<svg width="960" height="500"></svg>
+</div>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+// create the svg
+var kids_svg = d3.select("svg"),
+    kids_margin = {top: 20, right: 100, bottom: 50, left: 60},
+    kids_width = +kids_svg.attr("width") - kids_margin.left - kids_margin.right,
+    kids_height = +kids_svg.attr("height") - kids_margin.top - kids_margin.bottom,
+    kids_g = kids_svg.append("g").attr("transform", "translate(" + kids_margin.left + "," + kids_margin.top + ")");
+
+// set x scale
+var kids_x = d3.scaleBand()
+    .rangeRound([0, kids_width])
+    .paddingInner(0.05)
+    .align(0.1);
+
+// set y scale
+var kids_y = d3.scaleLinear()
+    .rangeRound([kids_height, 0]);
+
+// set the colors
+var kids_z = d3.scaleOrdinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+// load the csv and create the chart
+d3.csv("numberofkids.csv", function(d, i, columns) {
+  for (i = 1, t = 0; i < columns.length; ++i) {
+    t += d[columns[i]] = +d[columns[i]];
+  }
+  d.total = t;
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  console.log(data);
+  var keys = data.columns.slice(1);
+
+  kids_x.domain(data.map(function(d) { return d.Region; }));
+  kids_y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
+  kids_z.domain(keys);
+
+  kids_g.append("g")
+    .selectAll("g")
+    .data(d3.stack().keys(keys)(data))
+    .enter().append("g")
+      .attr("fill", function(d) { return kids_z(d.key); })
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("x", function(d) { return kids_x(d.data.Region); })
+      .attr("y", function(d) { return kids_y(d[1]); })
+      .attr("height", function(d) { return kids_y(d[0]) - kids_y(d[1]); })
+      .attr("width", kids_x.bandwidth())
+    .on("mouseover", function() { kids_tooltip.style("display", null); })
+    .on("mouseout", function() { kids_tooltip.style("display", "none"); })
+    .on("mousemove", function(d) {
+      console.log(d);
+      var xPosition = d3.mouse(this)[0] - 5;
+      var yPosition = d3.mouse(this)[1] - 5;
+      kids_tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+      kids_tooltip.select("text").text(Math.round(d[1]-d[0])+"%");
+    });
+
+  kids_g.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + kids_height + ")")
+      .call(d3.axisBottom(kids_x))
+        .selectAll("text")
+          .attr("y", 10)
+          .attr("x", -24)
+          .attr("dy", ".35em")
+          .attr("transform", "rotate(-30)")
+
+  kids_g.append("g")
+      .attr("class", "axis")
+      .call(d3.axisLeft(kids_y).ticks(null, "s").tickFormat(function(d) { return d + "%"; }))
+    .append("text")
+      .attr("x", 2)
+      .attr("y", kids_y(kids_y.ticks().pop()) + 0.5)
+      .attr("dy", "0.32em")
+      .attr("fill", "#000")
+      .attr("font-weight", "bold")
+      .attr("text-anchor", "start");
+
+  var kids_legend = kids_g.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 10)
+      .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate("+ parseInt(kids_width/9) + "," + parseInt(i * 20) + ")"; });
+
+  kids_legend.append("rect")
+      .attr("x", kids_width - 19)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", kids_z);
+
+  kids_legend.append("text")
+      .attr("x", kids_width - 24)
+      .attr("y", 9.5)
+      .attr("dy", "0.32em")
+      .text(function(d) { return d; });
+});
+
+  // Prep the tooltip bits, initial display is hidden
+  var kids_tooltip = kids_svg.append("g")
+    .attr("class", "tooltip")
+    .style("display", "none");
+      
+  kids_tooltip.append("rect")
+    .attr("width", 60)
+    .attr("height", 20)
+    .attr("fill", "white")
+    .style("opacity", 0.5);
+
+  kids_tooltip.append("text")
+    .attr("x", 30)
+    .attr("dy", "1.2em")
+    .style("text-anchor", "middle")
+    .attr("font-size", "12px")
+    .attr("font-weight", "bold");
+
+</script>

@@ -1,0 +1,43 @@
+<html>
+  <head>
+  </head>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+
+  <style>
+    .piece {
+      position: absolute;
+      background-color: white;
+      border: 1px solid black;
+    }
+  </style>
+  <body id="main-body">
+    <script>
+      var total_points = 5;
+      var body = d3.select("body");
+
+      var sizes = document.getElementById("main-body").getBoundingClientRect(); 
+      var r = sizes.height/2;
+      var coordinates = [];
+      for (var i=0; i<total_points; i++) {
+        var rand = Math.floor(Math.random() * Math.floor(5))+1;
+        var dim = rand*50;
+
+        var theta = ((Math.PI*2)/total_points);
+        var angle = (theta*i);
+        var x = (r * Math.cos(angle))+(sizes.width/2)-dim/2;
+        var y = (r * Math.sin(angle))+r;
+        console.log(x,y);
+        body.append("div")
+            .attr("class", "piece")
+            .style("left", x+"px")
+            .style("top", y+"px")
+            .style("width", dim+"px")
+            .style("height", dim+"px")
+            .style("border-radius", dim+"px");
+      }
+
+      
+    </script>
+  </body>
+</html>

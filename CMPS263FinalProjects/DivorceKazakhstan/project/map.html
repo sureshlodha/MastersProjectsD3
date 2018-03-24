@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.states {
+  fill: #74a9cf;
+  stroke: #fff;
+}
+</style>
+<body>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+
+<script src="https://d3js.org/d3-selection.v1.min.js"></script>
+
+<script src="https://d3js.org/d3-collection.v1.min.js"></script>
+<script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+<script src="https://d3js.org/d3-request.v1.min.js"></script>
+
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script>
+var width = 700,
+    height = width/1.80;
+
+var projection = d3.geoMercator()
+                   .scale(1.39*width)
+                   .translate([-width*1.13, 3*height-height/20]);
+
+var path = d3.geoPath()
+    .projection(projection);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+d3.json("kz.json", function(error, kz) {
+
+  kz_map_data = topojson.feature(kz, kz.objects["map (2)"]).features;
+  console.log(kz_map_data);
+
+  svg.selectAll("path").data(kz_map_data).enter().append("path")
+      .attr("class", "states")
+      .attr("d", path);
+
+  
+  svg.selectAll(".place-label")
+     .data(kz_map_data)
+     .enter()
+     .append("text")
+     .attr("class", "place-label")
+     .attr("x", function (d) {
+        var c = path.centroid(d);
+        return c[0];
+      })
+     .attr("y", function (d) {
+        var c = path.centroid(d);
+        return c[1];
+      })
+     
+     .attr("dy", ".35em")
+     .text(function(d) { return d.properties.Name; });
+});
+
+</script>

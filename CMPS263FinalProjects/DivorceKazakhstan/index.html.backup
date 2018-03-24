@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Life of Sabina: Chances She Will Divorce.</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://blackrockdigital.github.io/startbootstrap-thumbnail-gallery/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://blackrockdigital.github.io/startbootstrap-thumbnail-gallery/css/thumbnail-gallery.css" rel="stylesheet">
+
+  </head>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-array.v1.min.js"></script>
+  <script src="https://d3js.org/d3-geo.v1.min.js"></script>
+
+  <script src="https://d3js.org/d3-selection.v1.min.js"></script>
+
+  <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+  <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+  <script src="https://d3js.org/d3-request.v1.min.js"></script>
+
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+
+  <style>
+
+  .reg {
+    fill: #74a9cf;
+    stroke: #fff;
+  }
+
+  .line1 {
+    fill: none;
+  }
+
+  #chances-canvas {
+    border: 0px solid black;
+    border-radius: 10px;
+  }
+  #by-period-canvas {
+    border: 0px solid black;
+    border-radius: 10px;
+  }
+
+  #age-canvas {
+    border: 0px solid black;
+    border-radius: 10px;
+    padding: 15px;
+  }
+
+  #age-span {
+    font-size: 90px;
+    text-align: center;
+    padding-top: 20px;
+    width: 100%;
+  }
+
+  .place-label {
+    font-size: 11px;
+    font-family: Arial;
+  }
+  </style>
+  <body>
+
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <h1 class="my-4 text-center text-lg-left">Life of Sabina</h1>
+
+      <div class="row text-center text-lg-left">
+
+        <div id="age-canvas" class="col-lg-4 col-md-4 col-xs-6" >
+          <h5>1.Sabina said "Yes" to her loved one. Her age is:</h5>
+          <div id="age-span">24</div>
+        </div>
+        <div id="chances-canvas" class="col-lg-8 col-md-4 col-xs-6">
+          <h5 style="margin-top: 10px;">2.Chances Sabina will divorce</h5>
+          <p style="10px;">Sabina is more likely to divorce if she lived in North Kazakhstan Region.</p>
+        </div>
+      </div>
+
+        <!-- ROW 2 -->
+      <div class="row text-center text-lg-left">
+
+        <div id="map-canvas" class="col-lg-6 col-md-3 col-xs-3">
+        </div>
+        <div id="by-period-canvas" class="col-lg-6 col-md-4 col-xs-6">
+          <h5 style="margin-top: 10px;">3.When Sabina is most likely to divorce?</h5>
+          <p style="10px;">First 5 years of the marriage are crucial for Sabina. Than's when she is most likely to divorce. She should be very careful.</p>
+          <svg id="graph1" width="100%" height="300"></svg>
+        </div>
+      </div>
+
+        <!-- ROW 3 -->
+      <div class="row text-center text-lg-left">
+
+        <div class="col-lg-4 col-md-4 col-xs-6">
+          <h5>5.Number of kids affected by divorce every year:</h5>
+          <div id="age-span">24021</div>
+        </div>
+        <div class="col-lg-8 col-md-4 col-xs-6">
+          <h5 style="margin-top: 10px;">4.Chances Sabina will end up having kids at divorce time?</h5>
+          <p>There is 70% chance that Sabina will end up having kids if she divorces.</p>
+          <div style="height: 400px;">
+            <svg id="kids-canvas" width="100%" height="400px;"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">CMPS 263 - Winter 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+    <!-- D3 Divorces by duration -->
+    <script>
+      var graph1 = document.getElementById("graph1").getBoundingClientRect();
+
+      var svg = d3.select("#graph1"),
+          margin = {top: 20, right: 20, bottom: 60, left: 40},
+          width = +graph1.width - margin.left - margin.right,
+          height = +graph1.height - margin.top - margin.bottom,
+          g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      var x0 = d3.scaleBand()
+          .rangeRound([0, width])
+          .paddingInner(0.1);
+
+      var x1 = d3.scaleBand()
+          .padding(0.05);
+
+      var y = d3.scaleLinear()
+          .rangeRound([height, 0]);
+
+      var z = d3.scaleOrdinal()
+          .range(['#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b']);
+
+      d3.csv("./data.csv", function(d, i, columns) {
+        for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
+        return d;
+      }, function(error, data) {
+        if (error) throw error;
+
+        var keys = data.columns.slice(1);
+        console.log(keys);
+        x0.domain(data.map(function(d) { return d.State; }));
+        x1.domain(keys).rangeRound([0, x0.bandwidth()]);
+        y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
+
+        g.append("g")
+          .selectAll("g")
+          .data(data)
+          .enter().append("g")
+            .attr("transform", function(d) { return "translate(" + x0(d.State) + ",0)"; })
+          .selectAll("rect")
+          .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
+          .enter().append("rect")
+            .attr("x", function(d) { return x1(d.key); })
+            .attr("y", function(d) { return y(d.value); })
+            .attr("width", x1.bandwidth())
+            .attr("height", function(d) { return height - y(d.value); })
+            .attr("fill", function(d) { return z(d.key); });
+
+        g.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x0))
+            .selectAll("text")
+              .style("text-anchor", "end")
+              .attr("dx", "-.8em")
+              .attr("dy", ".15em")
+              .attr("transform", "rotate(-65)");
+
+        g.append("g")
+            .attr("class", "axis")
+            .call(d3.axisLeft(y).ticks(null, "s"))
+          .append("text")
+            .attr("x", 2)
+            .attr("y", y(y.ticks().pop()) + 0.5)
+            .attr("dy", "0.32em")
+            .attr("fill", "#000")
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "start")
+            .text(" Number of Divorces");
+
+        var legend = g.append("g")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 10)
+            .attr("text-anchor", "end")
+          .selectAll("g")
+          .data(keys.slice().reverse())
+          .enter().append("g")
+            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+        legend.append("rect")
+            .attr("x", width - 19)
+            .attr("width", 19)
+            .attr("height", 19)
+            .attr("fill", z);
+
+        legend.append("text")
+            .attr("x", width - 24)
+            .attr("y", 9.5)
+            .attr("dy", "0.32em")
+            .text(function(d) { return d; });
+      });
+    </script>
+
+    <!-- MAP -->
+<script>
+var map_canvas = document.getElementById("map-canvas").getBoundingClientRect();
+var m_width = map_canvas.width,
+    m_height = m_width/1.80;
+
+var projection = d3.geoMercator()
+                   .scale(1.39*m_width)
+                   .translate([-m_width*1.13, 3*m_height-m_height/20]);
+
+var geopath = d3.geoPath()
+    .projection(projection);
+
+var svg = d3.select("#map-canvas").append("svg")
+    .attr("width", m_width)
+    .attr("height", m_height);
+
+d3.json("kz.json", function(error, kz) {
+
+  kz_map_data = topojson.feature(kz, kz.objects["map (2)"]).features;
+  console.log(kz_map_data);
+
+  svg.selectAll("i").data(kz_map_data).enter().append("path")
+      .attr("class", "reg")
+      .attr("d", geopath);
+
+  
+  svg.selectAll(".place-label")
+     .data(kz_map_data)
+     .enter()
+     .append("text")
+     .attr("class", "place-label")
+     .attr("x", function (d) {
+        var c = geopath.centroid(d);
+        return c[0];
+      })
+     .attr("y", function (d) {
+        var c = geopath.centroid(d);
+        return c[1];
+      })
+     
+     .attr("dy", ".35em")
+     .text(function(d) { return "• "+d.properties.Name; });
+});
+
+</script>
+
+<!--D3 divorce to marriage ratio graph-->
+    <script>
+      var chances_canvas = document.getElementById("chances-canvas").getBoundingClientRect();
+      chances_width = chances_canvas.width;
+      chances_height = chances_width*1/2;
+      // set the dimensions and margins of the graph
+      var line_margin = {top: 20, right: 150, bottom: 30, left: 100},
+          line_width = chances_width - line_margin.left - line_margin.right,
+          line_height = chances_height - line_margin.top - line_margin.bottom;
+
+      var ch_svg = d3.select("#chances-canvas").append("svg")
+          .attr("width", line_width + line_margin.left + line_margin.right)
+          .attr("height", line_height + line_margin.top + line_margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + line_margin.left + "," + line_margin.top + ")");
+
+      //parse time funciton
+      var parseTime = d3.timeParse("%Y");
+
+      //set ranges
+      var ch_x = d3.scaleTime().range([0, line_width]);
+      var ch_y = d3.scaleLinear().range([line_height,0]);
+
+      //define the line
+      var ch_line = d3.line()
+                   .curve(d3.curveBasis)
+                   .x(function(d) {return ch_x(d.year);})
+                   .y(function(d) {return ch_y(d.ratio);})
+
+      d3.csv("./chances.csv", function(data) {
+        var col_names = data["columns"];
+        col_names.shift();
+        
+        max_num = 0;
+        region_data = {};
+        for (var i=0; i<data.length; i++) {
+          region = data[i].Region;
+          region_data[region] = [];
+          for (var key in data[i]) {
+            if (typeof data[i][key] !== 'function' && parseFloat(data[i][key])) {
+              region_data[region].push({"year": parseTime(parseInt(key)), "ratio": parseFloat(data[i][key])});
+              if (max_num<parseFloat(data[i][key])) {
+                max_num = parseFloat(data[i][key]);
+              }
+            }
+          }
+        }
+        console.log(max_num); 
+        console.log(region_data);
+        for (var i=0; i<col_names.length; i++) {
+          col_names[i] = parseTime(parseInt(col_names[i]));
+        }
+
+        ch_x.domain(d3.extent(col_names));
+        ch_y.domain([0, max_num]);
+        
+        //axis
+        ch_svg.append("g").attr("transform", "translate(0," + line_height + ")")
+                       .call(d3.axisBottom(ch_x));
+        ch_svg.append("g").call(d3.axisLeft(ch_y));
+
+
+        //add lines
+        for (var reg in region_data) {
+          if (typeof region_data[reg] !== 'function') {
+              var ch_path = ch_svg.append("path").data([region_data[reg]])
+                                .attr("class", "line1")
+                                .attr("d", ch_line)
+                                .style("stroke", function (d) {return "#eee";});
+              console.log(ch_path);
+              totalLength = ch_path.node().getTotalLength();
+              console.log(totalLength); 
+
+              ch_svg.append("text")
+                 .attr("transform", function(d) {
+                                      last_index = region_data[reg].length-1;
+                                      last_data_point = region_data[reg][last_index];
+                                      return "translate("+ch_x(last_data_point["year"])+","+ch_y(last_data_point["ratio"])+")";
+                                    })
+                 .text(reg)
+          }
+        }        
+      });
+
+      ch_svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate("+ -50 +","+(line_height/2)+")rotate(-90)")  
+            .text("Divorces to Marriages ratio");
+
+      
+    </script>
+
+<!-- D3 number of kids -->
+
+<script>
+var kids_canvas = document.getElementById("kids-canvas").getBoundingClientRect();
+// create the svg
+var kids_w = kids_canvas.width;
+    kids_h = 400;
+
+var kids_svg = d3.select("#kids-canvas"),
+    kids_margin = {top: 20, right: kids_w/6, bottom: 50, left: 60},
+    kids_width = kids_w - kids_margin.left - kids_margin.right,
+    kids_height = kids_h - kids_margin.top - kids_margin.bottom,
+    kids_g = kids_svg.append("g").attr("transform", "translate(" + kids_margin.left + "," + kids_margin.top + ")");
+
+// set x scale
+var kids_x = d3.scaleBand()
+    .rangeRound([0, kids_width])
+    .paddingInner(0.05)
+    .align(0.1);
+
+// set y scale
+var kids_y = d3.scaleLinear()
+    .rangeRound([kids_height, 0]);
+
+// set the colors
+var kids_z = d3.scaleOrdinal()
+          .range(['#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b']);
+
+// load the csv and create the chart
+d3.csv("numberofkids.csv", function(d, i, columns) {
+  for (i = 1, t = 0; i < columns.length; ++i) {
+    t += d[columns[i]] = +d[columns[i]];
+  }
+  d.total = t;
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  console.log(data);
+  var keys = data.columns.slice(1);
+
+  kids_x.domain(data.map(function(d) { return d.Region; }));
+  kids_y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
+  kids_z.domain(keys);
+
+  kids_g.append("g")
+    .selectAll("g")
+    .data(d3.stack().keys(keys)(data))
+    .enter().append("g")
+      .attr("fill", function(d) { return kids_z(d.key); })
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("x", function(d) { return kids_x(d.data.Region); })
+      .attr("y", function(d) { return kids_y(d[1]); })
+      .attr("height", function(d) { return kids_y(d[0]) - kids_y(d[1]); })
+      .attr("width", kids_x.bandwidth())
+    .on("mouseover", function() { kids_tooltip.style("display", null); })
+    .on("mouseout", function() { kids_tooltip.style("display", "none"); })
+    .on("mousemove", function(d) {
+      console.log(d);
+      var xPosition = d3.mouse(this)[0] - 5;
+      var yPosition = d3.mouse(this)[1] - 5;
+      kids_tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+      kids_tooltip.select("text").text(Math.round(d[1]-d[0])+"%");
+    });
+
+  kids_g.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + kids_height + ")")
+      .call(d3.axisBottom(kids_x))
+        .selectAll("text")
+          .attr("y", 10)
+          .attr("x", -24)
+          .attr("dy", ".35em")
+          .attr("transform", "rotate(-30)")
+
+  kids_g.append("g")
+      .attr("class", "axis")
+      .call(d3.axisLeft(kids_y).ticks(null, "s").tickFormat(function(d) { return d + "%"; }))
+    .append("text")
+      .attr("x", 2)
+      .attr("y", kids_y(kids_y.ticks().pop()) + 0.5)
+      .attr("dy", "0.32em")
+      .attr("fill", "#000")
+      .attr("font-weight", "bold")
+      .attr("text-anchor", "start");
+
+  var kids_legend = kids_g.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 10)
+      .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate("+ parseInt(kids_width/6) + "," + parseInt(i * 20) + ")"; });
+
+  kids_legend.append("rect")
+      .attr("x", kids_width - 19)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", kids_z);
+
+  kids_legend.append("text")
+      .attr("x", kids_width - 24)
+      .attr("y", 9.5)
+      .attr("dy", "0.32em")
+      .text(function(d) { return d; });
+});
+
+  // Prep the tooltip bits, initial display is hidden
+  var kids_tooltip = kids_svg.append("g")
+    .attr("class", "tooltip")
+    .style("display", "none");
+      
+  kids_tooltip.append("rect")
+    .attr("width", 60)
+    .attr("height", 20)
+    .attr("fill", "white")
+    .style("opacity", 0.5);
+
+  kids_tooltip.append("text")
+    .attr("x", 30)
+    .attr("dy", "1.2em")
+    .style("text-anchor", "middle")
+    .attr("font-size", "12px")
+    .attr("font-weight", "bold");
+
+</script>
+  </body>
+
+</html>

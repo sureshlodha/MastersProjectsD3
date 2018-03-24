@@ -1,0 +1,49 @@
+Year,Dynasty1,Area1,color
+-221,Qin,360,0
+-210,Qin,347,0
+-206,Western Han,337.87,1
+-150,Western Han,210,1
+-120,Western Han,267,1
+0,Western Han,610,1
+25,Eastern Han,555.5883,0
+85,Eastern Han,425,0
+100,Eastern Han,570,0
+140,Eastern Han,580,0
+220,Three Kingdoms,556.66,1
+260,Three Kingdoms,545,1
+265,Western Jin,545,0
+280,Western Jin,545,0
+317,Eastern Jin,463.292,1
+400,Eastern Jin,280,1
+420,Northern & Southern Dynasty,487.2,0
+450,Northern & Southern Dynasty,798,0
+490,Northern & Southern Dynasty,780,0
+530,Northern & Southern Dynasty,780,0
+573,Northern & Southern Dynasty,132,0
+581,Sui,275,1
+612,Sui,470,1
+618,Tang,455,0
+628,Tang,430,0
+660,Tang,1210,0
+700,Tang,930,0
+750,Tang,840,0
+907,Five Dynasties & Ten Kingdoms,603.651,1
+960,Northern Song,523.864,0
+1120,Northern Song,283,0
+1127,Southern Song,275.7375,1
+1200,Southern Song,200,1
+1271,Yuan,1669.7,0
+1300,Yuan,2270,0
+1368,Ming,1584.603,1
+1426,Ming,1000,1
+1440,Ming,950,1
+1585,Ming,750,1
+1640,Ming,350,1
+1644,Qing,400,0
+1690,Qing,975,0
+1760,Qing,1310,0
+1820,Qing,1300,0
+1912,Qing,1131,0
+1912,Republic of China,1131,1
+1949,PRC,960,0
+2018,People republic of China(today),960,

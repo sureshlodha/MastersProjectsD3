@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+  <title>Prescription Drug Use</title>
+  <link href="style.css" rel="stylesheet"/>
+  <script type= "text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+<h1 id="titles">How Different Groups Use Prescription Drugs</h1>
+<div>    
+    <p> 
+        A large percentage of Americans have become dependent on prescription drugs to treat various medical conditions. If we analyze changes in drug use over the years with respect to the percentage of the population, we can see the overall health trend. We observed that drugs treating resperatory problems are more common for young people whereas the use of drugs treating blood and heart problems increase along with age. 
+    </p>
+</div>    
+
+      
+<div>
+    <p style="font-weight: bold">Created By</p>
+    <p>Tuan Tran in collaboration with Suresh K Lodha and Shuai Zhou</p>    
+    <br>
+    <p><strong>Email: </strong>atran18@ucsc.edu</p>
+    <p><a href="https://github.com/KohdMonkey/VisualizationProject">Github Link</a></p>
+    <br>
+    <p>Designed For</p>
+    <p>CMPS 263: Data Driven Discovery and Visualization, Winter 2018</p>  
+</div>    
+
+<br><br>
+<br><br>
+  
+<section class="container">
+    <div class="svg">
+    </div>
+
+    <div class="options-div">
+        <div class="menu-div">
+            <select id="genderMenu"></select>
+            <select id="groupMenu"></select>
+        </div>
+        <div class="checkbox-div">
+            <ul class="drug-list"> </ul> 
+        </div>
+        
+    </div>
+</section>      
+<script type= "text/javascript" src="prescriptiondrugs.js"></script>    
+    
+ <br><br>
+<br><br>   
+    
+    
+    
+    
+    
+    
+<div id="credits">
+<table>
+  <tr id = "header">
+    <td class="column">Files:</td>
+    <td class="column">Data Sources:</td>
+    <td class="column">Relevant Visualization:</td>
+    <td class="column">Code Sources:</td>
+  </tr>
+  <tr>
+    <td class="column"> </td>
+    <td class="column"> </td>
+    <td class ="column"> </td>
+    <td class ="column"> </td>
+  </tr>
+  <tr>
+    <td class="column"><a href = "https://github.com/KohdMonkey/VisualizationProject/blob/master/index.html">index.html</a></td>
+    <td class="column"> <a href = "ftp://ftp.cdc.gov/pub/Health_Statistics/NCHS/Publications/Health_US/hus16tables/table080.xls">CDC Data</a> </td>
+      <td class="column">
+      <a href = "https://www.cdc.gov/nchs/images/databriefs/1-50/db42_Fig1.png">Trends in Prescription Drug Use</a>
+      </td>  
+    <td class = "column"> <a href = "https://bl.ocks.org/larsenmtl/e3b8b7c2ca4787f77d78f58d41c3da91">Mouseover Multiline Chart</a> </td>
+  </tr>
+    
+  <tr>
+    <td class="column"><a href = "https://github.com/KohdMonkey/VisualizationProject/blob/master/style.css">style.css</a></td>
+    <td class="column"></td>
+      <td class="column">
+      <a href = "https://www.cdc.gov/nchs/images/databriefs/1-50/db42_Fig3.png">Drug Use Among Subgroups</a>
+      </td>  
+    <td class = "column"> <a href = "https://github.com/palmchou/animated_multiline_chart">Multiline Chart Checkboxes</a> </td>
+  </tr>
+    
+  <tr>
+    <td class="column"><a href = "https://github.com/KohdMonkey/VisualizationProject/blob/master/prescriptiondrugs.js">prescriptiondrugs.js</a></td>
+    <td class="column"></td>  
+      <td class="column"></td>  
+    <td class = "column"> <a href = "//https://bl.ocks.org/d3noob/c506ac45617cf9ed39337f99f8511218">Multiline Chart Gridlines</a> </td>
+  </tr>
+    
+  <tr>
+    <td class="column"><a href = "https://github.com/KohdMonkey/VisualizationProject/blob/master/data.csv">data.csv</a></td>
+  </tr>    
+  
+</table>    
+</div>
+    
+<script type="text/javascript" src="TimeChart.js"></script>
+</body>
+</html>

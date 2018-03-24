@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Life of Sabina: Chances She Will Divorce.</title>
+
+
+  </head>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-array.v1.min.js"></script>
+  <script src="https://d3js.org/d3-geo.v1.min.js"></script>
+
+  <script src="https://d3js.org/d3-selection.v1.min.js"></script>
+
+  <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+  <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+  <script src="https://d3js.org/d3-request.v1.min.js"></script>
+
+  <script src="https://d3js.org/topojson.v1.min.js"></script>
+
+  <style>
+
+  html, body {
+    height: 100%;
+    background-color: #fdfdfd;
+    margin: 0;
+  }
+  .reg {
+    fill: #ccc;
+    stroke: #2a2a2a;
+    stroke-width: 0.5px;
+  }
+
+  .line1 {
+    fill: none;
+  }
+
+  #chances-canvas {
+  }
+
+  #by-period-canvas {
+  }
+
+  #age-canvas {
+  }
+
+  #numberofkids-canvas {
+  }
+
+  #totalnumberofkids-canvas {
+  }
+
+  .canvases {
+    border: 1px dashed #2a2a2a;
+    position: absolute;
+    text-align: center;
+    background-color: #fafafa;
+  }
+  #map-canvas {
+    position: absolute;
+  }
+
+  #age-span {
+    font-size: 60px;
+    text-align: center;
+    width: 100%;
+  }
+  #kids-span {
+    font-size: 45px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .place-label {
+    font-size: 11px;
+    font-family: Arial;
+    fill: #2a2a2a;
+  }
+
+  #header {
+    width: 100%;
+    background-color: #fafafa;
+    margin: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #2a2a2a;
+  }
+
+  #insight {
+    background-color: #fafafa;
+    position: relative;
+    top: 1100px;
+  }
+  .info {
+    width: 960px; 
+    position: relative; 
+    height: auto; 
+    margin: 0 auto;
+  }
+  </style>
+
+  <body id="body-main">
+
+
+
+      <div id="header">
+        <div class="info">
+          <center><h1>Life of Sabina</h1></center>
+          <center><h2>What are the chances she will divorce?</h2></center>
+          <p>This is the story of Sabina, an average woman from Kazakhstan (Sabina is a popular Kazakh female name). Through her story we will get an insight about the current marital situation in Kazakhstan.</p> 
+          <p>Visualization is based on the annual demographic report of Kazakhstan National Committee on Statistics for 2009-2016 period. </p>
+          <p>Why this is important? I believe, family is a building block of any society. Healthy families lead to healthy society. Unfortunately, the mariatal situation in Kazakhstan is getting worse every year. Thousands of kids are affected and traumatized <a href="https://visual.ly/community/infographic/social-media/effects-divorce-children">(read more)</a>. The purpose of this visualization is to inform people of Kazakhstan about this situation.</p>
+        </div>
+        </div>
+      </div>
+      <div id="insight">
+        <div class="info">
+          <table width="100%">
+            <tr>
+              <td width="25%" style="vertical-align: top; border-right: 1px solid #ccc; padding-right: 10px; padding-left: 10px;">
+                <p>Divorces to Marriages ratio is increasing every year. This means, in Kazakhstan divorces are getting more frequent and marriages are getting more rare. The chances Sabina will get married is getting less every year, and if she does chances she will divorce are getting higher. To increase probability of happier life she should move to South Kazakhstan region as it has lowest Divorces to Marriages ratio, and should avoid Pavlodar region as it has the highest ratio respectively.</p>
+              </td>
+              <td width="25%" style="vertical-align: top; border-right: 1px solid #ccc; padding-right: 10px; padding-left: 10px;">
+                <p>The crisis in Sabina's family-life is most likely to happen during the first 5 years of the marriage. That's when most of the couples in Kazakhstan decide to break-up.</p>
+              </td>
+              <td width="25%" style="vertical-align: top; border-right: 1px solid #ccc; padding-right: 10px; padding-left: 10px;">
+                <p>If Sabina divorces, she is most likely to have two or more kids. Statistics shows that 70% of the divorces affect kids.</p>
+              </td>
+              <td width="25%" style="vertical-align: top; border-right: 0px solid #ccc; padding-right: 10px; padding-left: 10px;">
+                <p>On average, 115156 children are affected due to divorce.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+<br>
+        <div class="info">
+          <table style="width:100%; border-top: 1px solid #ccc;">
+            <tr>
+              <td style="width: 33%;">
+                <p><i>Created by Nursultan Kabylkas (nkabylka@ucsc.edu) in collaboration with Professor Lodha</i></p>
+                <p><i>Designed for CMPS263</i></p>
+                <h4>Files:</h4>
+                <a style="font-size: 11px;" href="./project.zip">project.zip</a><br>
+                <br><br>
+                <h4>Similar projects:</h4>
+                <a style="font-size: 11px;" href="http://flowingdata.com/2017/07/25/divorce-and-occupation/">Divorce by Occupation</a><br>
+                <a style="font-size: 11px;" href="https://flowingdata.com/2016/03/30/divorce-rates-for-different-groups/">Divorce Rates for Different Groups</a><br>
+                <a style="font-size: 11px;" href="https://visual.ly/community/infographic/social-media/effects-divorce-children">Effects of Divorce on Children</a>
+
+              </td>
+              <td style="width: 33%;">
+                <h4>Data sources:</h4>
+                <h5>Government websites:</h5>
+                <a style="font-size: 11px;" href="http://stat.gov.kz/faces/wcnav_externalId/publicationsSocialDevelopment;jsessionid=XFlph3F9AGxvUXkB6NYmPS2Zv-YlR2EHat4mfkDkNHavOw2oascQ!210756058!1060935102?_adf.ctrl-state=gh2onitkn_87&_afrLoop=2458852415814492#%40%3F_afrLoop%3D2458852415814492%26_adf.ctrl-state%3Drwtz5w6vm_4">Annual demographic report</a><br><br>
+                <h5>News articles:</h5>
+                <a style="font-size: 11px;" href="https://tengrinews.kz/kazakhstan_news/agentstvo-statistike-prokommentirovalo-rost--razvodov-249192/">Article #1</a><br>
+                <a style="font-size: 11px;" href="https://www.nur.kz/993238-kazakhstancy-razvodyatsya-iz-za-izmen-s.html">Article #2</a><br>
+                <a style="font-size: 11px;" href="http://ratel.kz/raw/glavnaja_prichina_razvodov_v_rk_nabirajuschij_oboroty_matriarhat_">Article #3</a><br>
+                <a style="font-size: 11px;" href="https://yvision.kz/post/679254">Article #4</a><br>
+                <a style="font-size: 11px;" href="https://www.kursiv.kz/news/tendencii-weekly/tendencii-lubvi/">Article #5</a><br>
+                <a style="font-size: 11px;" href="https://tengrinews.kz/kazakhstan_news/prichinu-razvodov-v-kazahstane-nazval-psiholog-324768/">Article #6</a><br>
+                <a style="font-size: 11px;" href="https://rus.azattyq.org/a/kazakhstan-uvelichenie-razvodov/27052944.html">Article #7</a><br>
+                
+              </td>
+              <td style="width: 33%;">
+                <h4>Code sources:</h4>
+                <a style="font-size: 11px;" href="https://bl.ocks.org/mbostock/3883245">Line chart</a><br>
+                <a style="font-size: 11px;" href="https://bl.ocks.org/mbostock/3887051">Grouped bar chart</a><br>
+                <a style="font-size: 11px;" href="https://bl.ocks.org/mbostock/3886208">Stacked bar chart</a><br>
+                <a style="font-size: 11px;" href="https://bost.ocks.org/mike/map/">Geo spatial mapping</a><br>
+
+              </td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+      <div id="footer">
+      </div>
+
+
+        <!-- GRAPH 1-->
+        <div  class="canvases" id="age-canvas">
+          <h5>1.Sabina said "Yes" <br> to her loved one. Her age is:</h5>
+          <div id="age-span">25.2</div>
+        </div>
+
+        <!-- GRAPH 2-->
+        <div  class="canvases" id="chances-canvas">
+          <h5 style="margin-top: 10px; color: #444;">2.Chances Sabina will divorce</h5>
+        </div>
+
+        <!-- MAP -->
+        <div id="map-canvas"></div>
+        <!-- GRAPH 3-->
+        <div  class="canvases" id="by-period-canvas">
+          <h5 style="margin-top: 10px;">3.When Sabina is most likely to divorce?</h5>
+          <svg id="graph1" width="100%" height="300"></svg>
+        </div>
+
+        <!-- GRAPH 5 -->
+        <div class="canvases" id="totalnumberofkids-canvas">
+          <h5>5.Number of kids<br> affected by divorce<br>every year:</h5>
+          <div id="kids-span">115156</div>
+        </div>
+
+        <!-- GRAPH 4 -->
+        <div class="canvases" id="numberofkids-canvas">
+          <h5 style="margin-top: 10px;">4.Chances Sabina will end up having kids at divorce time?</h5>
+          <div style="height: 400px;">
+            <svg id="kids-canvas" width="100%"></svg>
+          </div>
+        </div>
+
+    <!-- SET SIZES AND POSITIONS -->
+    <script>
+      var page_center = document.getElementById("body-main").getBoundingClientRect().width/2;
+      var graph_half = 600;
+      var graph_heigth = 600;
+      var add_shift = page_center-graph_half;
+
+      var header_info = document.getElementById("header").getBoundingClientRect();
+      var body_info = {"width": 1282, "height": 654};
+      //calculate circular points on the page
+      var total_points = 20;
+      //alert(body_info.height);
+      var r = (body_info.height/2)*1.05;
+      var shift = r*0.85-add_shift;
+      var y_shift = header_info.height + 10;
+
+
+      var coordinates = [];
+      for (var i=0; i<total_points; i++) {
+        var theta = ((Math.PI*2)/total_points);
+        var angle = (theta*i);
+        var x = (r * Math.cos(angle))+(body_info.width/2)-shift;
+        var y = (r * Math.sin(angle))+r+y_shift;
+        coordinates.push({"x": x, "y": y});
+      }
+
+      //arrow 1
+      d3.select("body").append("img")
+         .attr("src", "./img/arrow1.png")
+         .style("position", "absolute")
+         .style("left", coordinates[14].x+"px")
+         .style("top", coordinates[14].y+"px");
+      //arrow 2
+      d3.select("body").append("img")
+         .attr("src", "./img/arrow2.png")
+         .style("position", "absolute")
+         .style("left", parseInt(coordinates[18].x+270)+"px")
+         .style("top", coordinates[18].y+"px");
+      //arrow 3
+      d3.select("body").append("img")
+         .attr("src", "./img/arrow3.png")
+         .style("position", "absolute")
+         .style("left", parseInt(coordinates[3].x+150)+"px")
+         .style("top", parseInt(coordinates[3].y+130)+"px");
+      //arrow 4
+      d3.select("body").append("img")
+         .attr("src", "./img/arrow4.png")
+         .style("position", "absolute")
+         .style("left", parseInt(coordinates[6].x-150)+"px")
+         .style("top", coordinates[6].y+"px");
+      //age canvas
+      var age_canvas_w = 0.15*body_info.width;
+      var age_canvas_h = age_canvas_w;
+      d3.select("#age-canvas")
+           .style("width", age_canvas_w+"px")
+           .style("height", age_canvas_h+"px")
+           .style("padding", "15px")
+           .style("border-radius", age_canvas_w+"px")
+           .style("left", coordinates[12].x+"px")
+           .style("top", coordinates[12].y+"px");
+
+      //chances canvas
+      var ch_canvas_w = 0.35*body_info.width;
+      var ch_canvas_h = ch_canvas_w*2/3;
+      d3.select("#chances-canvas")
+                         .style("width", ch_canvas_w+"px")
+                         .style("height", ch_canvas_h+"px")
+                         .style("border-radius", ch_canvas_w+"px")
+                         .style("left", coordinates[16].x+"px")
+                         .style("top", coordinates[16].y+"px");
+
+      //by period canvas
+      var bp_canvas_w = 0.35*body_info.width;
+      var bp_canvas_h = bp_canvas_w*2/3;
+      d3.select("#by-period-canvas")
+                         .style("width", bp_canvas_w+"px")
+                         .style("height", bp_canvas_h+"px")
+                         .style("border-radius", bp_canvas_w+"px")
+                         .style("padding", "50px")
+                         .style("left", coordinates[0].x+"px")
+                         .style("top", coordinates[0].y+"px");
+
+      //number of kids canvas
+      var nk_canvas_w = 0.35*body_info.width;
+      var nk_canvas_h = nk_canvas_w*2/3;
+      d3.select("#numberofkids-canvas")
+                         .style("width", nk_canvas_w+"px")
+                         .style("height", nk_canvas_h+"px")
+                         .style("border-radius", nk_canvas_w+"px")
+                         .style("padding-top", "50px")
+                         .style("left", coordinates[6].x+"px")
+                         .style("top", coordinates[6].y+"px");
+      
+      //total number of kids canvas
+      var tnk_canvas_w = 0.15*body_info.width;
+      var tnk_canvas_h = tnk_canvas_w;
+      d3.select("#totalnumberofkids-canvas")
+                         .style("width", tnk_canvas_w+"px")
+                         .style("height", tnk_canvas_h+"px")
+                         .style("border-radius", tnk_canvas_w+"px")
+                         .style("left", coordinates[9].x+"px")
+                         .style("top", coordinates[9].y+"px")
+      //map canvas
+      var map_canvas_w = 0.35*body_info.width;
+      var map_canvas_h = bp_canvas_w;
+      d3.select("#map-canvas")
+                         .style("width", map_canvas_w+"px")
+                         .style("height", map_canvas_h+"px")
+                         .style("border", "0px")
+                         .style("left", parseInt(body_info.width/2-shift-(map_canvas_w/4))+"px")
+                         .style("top", parseInt(body_info.height/2+y_shift)+"px");
+
+                       
+    </script>
+    <!-- age -->
+    <script>
+      d3.csv("./age.csv", function (age_data) {
+        d3.select("body").selectAll(".age_class").data(age_data).enter().append("input")
+          .attr("type", "hidden")
+          .attr("id", function (d) { return "age_id_"+d.region; })
+          .attr("data-age", function (d) { return ""+d.age; });
+      });
+
+      d3.csv("./averagenumkids.csv", function (kids_data) {
+        d3.select("body").selectAll(".kids_class").data(kids_data).enter().append("input")
+          .attr("type", "hidden")
+          .attr("id", function (d) { return "kids_id_"+d.region; })
+          .attr("data-kids", function (d) { return ""+d.number; });
+      });
+  
+    </script>
+    <!-- D3 Divorces by duration -->
+    <script>
+      var graph1 = document.getElementById("graph1").getBoundingClientRect();
+
+      var svg = d3.select("#graph1"),
+          margin = {top: 20, right: 20, bottom: 60, left: 40},
+          width = +graph1.width - margin.left - margin.right,
+          height = +graph1.width*2/4 - margin.top - margin.bottom,
+          g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      var x0 = d3.scaleBand()
+          .rangeRound([0, width])
+          .paddingInner(0.1);
+
+      var x1 = d3.scaleBand()
+          .padding(0.05);
+
+      var y = d3.scaleLinear()
+          .rangeRound([height, 0]);
+
+      var z = d3.scaleOrdinal()
+          .range(['#b30000','#e34a33','#fc8d59','#fdcc8a','#fef0d9']);
+
+      var z_gray = d3.scaleOrdinal()
+          .range(['#252525','#636363','#969696','#cccccc','#f7f7f7']);
+
+      d3.csv("./data.csv", function(d, i, columns) {
+        for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
+        return d;
+      }, function(error, data) {
+        if (error) throw error;
+
+        var keys = data.columns.slice(1);
+        x0.domain(data.map(function(d) { return d.State; }));
+        x1.domain(keys).rangeRound([0, x0.bandwidth()]);
+        y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
+
+        g.append("g")
+          .selectAll("g")
+          .data(data)
+          .enter().append("g")
+            .attr("transform", function(d) { return "translate(" + x0(d.State) + ",0)"; })
+          .selectAll("rect")
+          .data(function(d) { return keys.map(function(key) { return {State: d.State, key: key, value: d[key]}; }); })
+          .enter().append("rect")
+            .attr("class", function (d) { return "dur_class_"+d.State.replace(/\s/g,''); })
+            .attr("data-colorred", function (d) { return z(d.key); })
+            .attr("data-colorgray", function (d) { return z_gray(d.key); })
+            .attr("x", function(d) { return x1(d.key); })
+            .attr("y", function(d) { return y(d.value); })
+            .attr("width", x1.bandwidth())
+            .attr("height", function(d) { return height - y(d.value); })
+            .attr("fill", function(d) { return z_gray(d.key); })
+
+        g.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x0))
+            .selectAll("text")
+              .style("text-anchor", "end")
+              .attr("dx", "-.8em")
+              .attr("dy", ".15em")
+              .attr("transform", "rotate(-65)");
+
+        g.append("g")
+            .attr("class", "axis")
+            .call(d3.axisLeft(y).ticks(null, "s"))
+          .append("text")
+            .attr("x", 2)
+            .attr("y", y(y.ticks().pop()) + 0.5)
+            .attr("dy", "0.32em")
+            .attr("fill", "#000")
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "start")
+            .text(" Number of Divorces");
+
+        var legend = g.append("g")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 10)
+            .attr("text-anchor", "end")
+          .selectAll("g")
+          .data(keys.slice().reverse())
+          .enter().append("g")
+            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+        legend.append("rect")
+            .attr("x", width - 19)
+            .attr("width", 19)
+            .attr("height", 19)
+            .attr("fill", z);
+
+        legend.append("text")
+            .attr("x", width - 24)
+            .attr("y", 9.5)
+            .attr("dy", "0.32em")
+            .text(function(d) { return d; });
+      });
+    </script>
+
+    <!-- MAP -->
+<script>
+var map_canvas = document.getElementById("map-canvas").getBoundingClientRect();
+var m_width = map_canvas.width,
+    m_height = m_width/1.80;
+
+var projection = d3.geoMercator()
+                   .scale(1.39*m_width)
+                   .translate([-m_width*1.13, 3*m_height-m_height/20]);
+
+var geopath = d3.geoPath()
+    .projection(projection);
+
+var svg = d3.select("#map-canvas").append("svg")
+    .attr("width", m_width)
+    .attr("height", m_height);
+
+d3.json("kz.json", function(error, kz) {
+
+  kz_map_data = topojson.feature(kz, kz.objects["map (2)"]).features;
+  svg.selectAll("i").data(kz_map_data).enter().append("path")
+      .attr("class", "reg")
+      .attr("id", function (d) { return "map_id_"+d.properties.Name.replace(/\s/g,''); })
+      .attr("d", geopath)
+      .on("click", function (d) {
+        updateGraphs(d.properties.Name.replace(/\s/g,''));
+      });
+
+  
+  svg.selectAll(".place-label")
+     .data(kz_map_data)
+     .enter()
+     .append("text")
+     .attr("class", "place-label")
+     .attr("x", function (d) {
+        var c = geopath.centroid(d);
+        return c[0];
+      })
+     .attr("y", function (d) {
+        var c = geopath.centroid(d);
+        return c[1];
+      })
+     
+     .attr("dy", ".35em")
+     .text(function(d) { return "• "+d.properties.Name; });
+});
+
+
+</script>
+
+<!--D3 divorce to marriage ratio graph-->
+    <script>
+      var chances_canvas = document.getElementById("chances-canvas").getBoundingClientRect();
+      chances_width = chances_canvas.width;
+      chances_height = chances_width*1/2;
+      // set the dimensions and margins of the graph
+      var line_margin = {top: 20, right: 150, bottom: 30, left: 100},
+          line_width = chances_width - line_margin.left - line_margin.right,
+          line_height = chances_height - line_margin.top - line_margin.bottom;
+
+      var ch_svg = d3.select("#chances-canvas").append("svg")
+          .attr("width", line_width + line_margin.left + line_margin.right)
+          .attr("height", line_height + line_margin.top + line_margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + line_margin.left + "," + line_margin.top + ")");
+
+      //parse time funciton
+      var parseTime = d3.timeParse("%Y");
+
+      //set ranges
+      var ch_x = d3.scaleTime().range([0, line_width]);
+      var ch_y = d3.scaleLinear().range([line_height,0]);
+
+      //define the line
+      var ch_line = d3.line()
+                   .curve(d3.curveBasis)
+                   .x(function(d) {return ch_x(d.year);})
+                   .y(function(d) {return ch_y(d.ratio);})
+
+      d3.csv("./chances.csv", function(data) {
+        var col_names = data["columns"];
+        col_names.shift();
+        
+        max_num = 0;
+        region_data = {};
+        for (var i=0; i<data.length; i++) {
+          region = data[i].Region;
+          region_data[region] = [];
+          for (var key in data[i]) {
+            if (typeof data[i][key] !== 'function' && parseFloat(data[i][key])) {
+              region_data[region].push({"year": parseTime(parseInt(key)), "ratio": parseFloat(data[i][key])});
+              if (max_num<parseFloat(data[i][key])) {
+                max_num = parseFloat(data[i][key]);
+              }
+            }
+          }
+        }
+        for (var i=0; i<col_names.length; i++) {
+          col_names[i] = parseTime(parseInt(col_names[i]));
+        }
+
+        ch_x.domain(d3.extent(col_names));
+        ch_y.domain([0, max_num]);
+        
+        //axis
+        ch_svg.append("g").attr("transform", "translate(0," + line_height + ")")
+                       .call(d3.axisBottom(ch_x));
+        ch_svg.append("g").call(d3.axisLeft(ch_y));
+
+
+        //add lines
+        for (var reg in region_data) {
+          if (typeof region_data[reg] !== 'function') {
+              var ch_path = ch_svg.append("path").data([region_data[reg]])
+                                .attr("class", "line1")
+                                .attr("d", ch_line)
+                                .attr("id", "line_id_"+reg.replace(/\s/g,''))
+                                .style("stroke", function (d) {
+                                  if (reg=="Qazaqstan") return "#e34a33";
+                                  return "#ccc";
+                                });
+              totalLength = ch_path.node().getTotalLength();
+
+              ch_svg.append("text")
+                 .attr("id", "line_label_id_"+reg.replace(/\s/g,''))
+                 .attr("transform", function(d) {
+                                      last_index = region_data[reg].length-1;
+                                      last_data_point = region_data[reg][last_index];
+                                      return "translate("+ch_x(last_data_point["year"])+","+parseInt(ch_y(last_data_point["ratio"])+5)+")";
+                                 
+                                 
+                                    })
+                 .text(reg)
+                    .attr("fill", "#e34a33")
+                    .style("visibility", function (d) {
+                                    if (reg=="Qazaqstan") {
+                                      return "visible";
+                                    }
+                                    return "hidden";
+                                  })
+          }
+        }        
+      });
+
+      ch_svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate("+ -50 +","+(line_height/2)+")rotate(-90)")  
+            .text("Divorces to Marriages ratio");
+
+      
+    </script>
+
+<!-- D3 number of kids -->
+
+<script>
+var kids_canvas = document.getElementById("kids-canvas").getBoundingClientRect();
+// create the svg
+var kids_w = kids_canvas.width;
+    kids_h = kids_w*2/3;
+
+var kids_svg = d3.select("#kids-canvas"),
+    kids_margin = {top: 5, right: kids_w/6, bottom: kids_h*0.65, left: 60},
+    kids_width = kids_w - kids_margin.left - kids_margin.right,
+    kids_height = kids_h - kids_margin.top - kids_margin.bottom,
+    kids_g = kids_svg.append("g").attr("transform", "translate(" + kids_margin.left + "," + kids_margin.top + ")");
+
+// set x scale
+var kids_x = d3.scaleBand()
+    .rangeRound([0, kids_width])
+    .paddingInner(0.05)
+    .align(0.1);
+
+// set y scale
+var kids_y = d3.scaleLinear()
+    .rangeRound([kids_height, 0]);
+
+// set the colors
+var kids_z = d3.scaleOrdinal()
+          .range(['#fee8c8','#fdbb84','#e34a33']);
+var kids_z_gray = d3.scaleOrdinal()
+          .range(['#cccccc','#969696','#636363']);
+
+// load the csv and create the chart
+d3.csv("numberofkids.csv", function(d, i, columns) {
+  for (i = 1, t = 0; i < columns.length; ++i) {
+    t += d[columns[i]] = +d[columns[i]];
+  }
+  d.total = t;
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  console.log(data);
+  var keys = data.columns.slice(1);
+
+  kids_x.domain(data.map(function(d) { return d.Region; }));
+  kids_y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
+  kids_z.domain(keys);
+  kids_z_gray.domain(keys);
+
+  kids_g.append("g")
+    .selectAll("g")
+    .data(d3.stack().keys(keys)(data))
+    .enter().append("g")
+      .attr("fill", function(d) { return kids_z_gray(d.key); })
+      .attr("data-colorred", function (d) { return kids_z(d.key); })
+      .attr("data-colorgray", function (d) { return kids_z_gray(d.key); })
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+      .attr("class", function (d) { return "kids_class_"+d.data.Region.replace(/\s/g,''); })
+      .attr("x", function(d) { 
+                    if (d.data.Region == "Qazaqstan") {
+                      var rect = d3.select(this)._groups[0][0];
+                      rect.style.fill = rect.parentNode.getAttribute("data-colorred");
+                    }
+                    return kids_x(d.data.Region); 
+                 })
+      .attr("y", function(d) { return kids_y(d[1]); })
+      .attr("height", function(d) { return kids_y(d[0]) - kids_y(d[1]); })
+      .attr("width", kids_x.bandwidth())
+    .on("mouseover", function() { kids_tooltip.style("display", null); })
+    .on("mouseout", function() { kids_tooltip.style("display", "none"); })
+    .on("mousemove", function(d) {
+      var xPosition = d3.mouse(this)[0] - 5;
+      var yPosition = d3.mouse(this)[1] - 5;
+      kids_tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+      kids_tooltip.select("text").text(Math.round(d[1]-d[0])+"%");
+    });
+
+  kids_g.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + kids_height + ")")
+      .call(d3.axisBottom(kids_x))
+        .selectAll("text")
+          .attr("y", 10)
+          .attr("x", -24)
+          .attr("dy", ".35em")
+          .attr("transform", "rotate(-30)")
+
+  kids_g.append("g")
+      .attr("class", "axis")
+      .call(d3.axisLeft(kids_y).ticks(null, "s").tickFormat(function(d) { return d + "%"; }))
+    .append("text")
+      .attr("x", 2)
+      .attr("y", kids_y(kids_y.ticks().pop()) + 0.5)
+      .attr("dy", "0.32em")
+      .attr("fill", "#000")
+      .attr("font-weight", "bold")
+      .attr("text-anchor", "start");
+
+  var kids_legend = kids_g.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 10)
+      .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate("+ parseInt(kids_width/6) + "," + parseInt(i * 20) + ")"; });
+
+  kids_legend.append("rect")
+      .attr("x", kids_width - 19)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", kids_z);
+
+  kids_legend.append("text")
+      .attr("x", kids_width - 24)
+      .attr("y", 9.5)
+      .attr("dy", "0.32em")
+      .text(function(d) { return d; });
+});
+
+  // Prep the tooltip bits, initial display is hidden
+  var kids_tooltip = kids_svg.append("g")
+    .attr("class", "tooltip")
+    .style("display", "none");
+      
+  kids_tooltip.append("rect")
+    .attr("width", 60)
+    .attr("height", 20)
+    .attr("fill", "white")
+    .style("opacity", 0.5);
+
+  kids_tooltip.append("text")
+    .attr("x", 30)
+    .attr("dy", "1.2em")
+    .style("text-anchor", "middle")
+    .attr("font-size", "12px")
+    .attr("font-weight", "bold");
+
+</script>
+
+<script>
+  remember_name = "Qazaqstan";
+  function updateGraphs(name) {
+    var disselect = false;
+    //disselect code
+    if (remember_name != "") {
+      //region
+      var last_reg = d3.select("#map_id_"+remember_name);
+      last_reg.style("fill", "#ccc");
+
+      //line
+      var last_line = d3.select("#line_id_"+remember_name);
+      last_line.style("stroke", "#ccc");
+   
+      // line labels  
+      var last_line_label = d3.select("#line_label_id_"+remember_name);
+      last_line_label.style("visibility", "hidden");
+
+      //by duration bar chart
+      var duration_bars = document.getElementsByClassName("dur_class_"+remember_name);
+      for (var i=0; i<duration_bars.length; i++) {
+        duration_bars[i].style.fill = duration_bars[i].getAttribute("data-colorgray");
+      }
+
+      //kids
+      var kid_bars = document.getElementsByClassName("kids_class_"+remember_name);
+      for (var i=0; i<kid_bars.length; i++) {
+        kid_bars[i].style.fill = kid_bars[i].parentNode.getAttribute("data-colorgray");
+      }
+    }
+
+    //select code
+    if (remember_name != name) {
+      //region
+      var current_reg = d3.select("#map_id_"+name);
+      current_reg.style("fill", "#fdbb84");
+
+      //line
+      var current_line = d3.select("#line_id_"+name);
+      current_line.style("stroke", "#e34a33");
+
+      //line label
+      var current_line_label = d3.select("#line_label_id_"+name);
+      current_line_label.style("visibility", "visible");
+    
+      //by duration bar chart
+      var duration_bars = document.getElementsByClassName("dur_class_"+name);
+      for (var i=0; i<duration_bars.length; i++) {
+        duration_bars[i].style.fill = duration_bars[i].getAttribute("data-colorred");
+      }
+
+      //kids
+      var kid_bars = document.getElementsByClassName("kids_class_"+name);
+      for (var i=0; i<kid_bars.length; i++) {
+        kid_bars[i].style.fill = kid_bars[i].parentNode.getAttribute("data-colorred");
+      }
+
+      //age
+      var age_span = document.getElementById("age-span");
+      var age_data = document.getElementById("age_id_"+name).getAttribute("data-age");
+      age_span.innerHTML = age_data;
+
+      //kids
+      var kids_span = document.getElementById("kids-span");
+      var kids_data = document.getElementById("kids_id_"+name).getAttribute("data-kids");
+      kids_span.innerHTML = kids_data;
+
+      //update name
+      remember_name = name;
+    } else {
+      remember_name = "Qazaqstan";
+      var current_line = d3.select("#line_id_"+remember_name);
+      current_line.style("stroke", "#e34a33");
+      //
+      var current_line_label = d3.select("#line_label_id_"+remember_name);
+      current_line_label.style("visibility", "visible");
+
+      //kids
+      var kid_bars = document.getElementsByClassName("kids_class_"+remember_name);
+      for (var i=0; i<kid_bars.length; i++) {
+        kid_bars[i].style.fill = kid_bars[i].parentNode.getAttribute("data-colorred");
+      }
+      //age
+      var age_span = document.getElementById("age-span");
+      age_span.innerHTML = "25.2";
+      //kids
+      var kids_span = document.getElementById("kids-span");
+      kids_span.innerHTML = "115156";
+    }
+  }
+</script>
+  </body>
+
+</html>

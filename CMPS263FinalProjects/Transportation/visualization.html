@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Viz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+
+<!-- Optional theme -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../../bootstrap/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="ico/favicon.png">
+  </head>
+
+  <body>
+    
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="index.html">CMPS 263</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="index.html">Home</a></li>
+              <li><a target="_blank" href="visualization.html">Visualization</a></li>
+              <!-- <li><a href="#contact">Contact</a></li> -->
+<!--               <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li class="nav-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
+                </ul>
+              </li> -->
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <svg width="800" height="650"></svg>
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+  <select id="eth-opts" style="width: 280px; height: 350px; transform: translate(-270%,-80%); position: static" multiple>
+    <option style="font-size: 20px" value="data/final/Asian.json">Asian</option>
+    <option style="font-size: 20px" value="data/final/AfricanAm.json">African-American</option>
+    <option style="font-size: 20px" value="data/final/Latino.json">Latino</option>
+    <option style="font-size: 20px" value="data/final/White.json">White</option>
+    <option style="font-size: 20px" value="data/final/Total.json">Total</option>
+    <option style="font-size: 20px" value="data/final/2AfricanAm.json">AfricanAmerican wrt Average</option>
+    <option style="font-size: 20px" value="data/final/2Latino.json">Latino wrt Average</option>
+    <option style="font-size: 20px" value="data/final/2Asian.json">Asian wrt Average</option>
+    <option style="font-size: 20px" value="data/final/2White.json">White wrt Average</option>
+  </select>
+  <!-- <button onclick="changeEthnicity()" style="transform: translate(-1450%,-410%);" type="button" class="btn">Select</button> -->
+  <button onclick="changeEthnicity()" style="transform: translate(150%,-650%);" type="button" class="btn">Select</button>
+</div>
+  <script>
+
+  var ethnicity = document.getElementById( "eth-opts" );
+
+  var svg = d3.select("svg"),
+      width = +svg.attr("width"),
+      height = +svg.attr("height");
+
+  svg.attr("transform", "translate(300,0)");
+
+  // svg.css({top: 200, left: 200, position:'absolute'});
+
+  var path = d3.geoPath();
+
+  var color = d3.scaleThreshold()
+      // .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
+      .domain([0, 20, 40, 60, 80, 100])
+      .range(d3.schemeOrRd[7]);
+
+  var x = d3.scaleSqrt()
+      .domain([0, 100])
+      .rangeRound([440, 950]);
+
+  var g = svg.append("g")
+      .attr("class", "key")
+      .attr("transform", "translate(-300,610)");
+
+  g.selectAll("rect")
+    .data(color.range().map(function(d) {
+        d = color.invertExtent(d);
+        if (d[0] == null) d[0] = x.domain()[0];
+        if (d[1] == null) d[1] = x.domain()[1];
+        return d;
+      }))
+    .enter().append("rect")
+      .attr("height", 8)
+      .attr("x", function(d) { return x(d[0]); })
+      .attr("width", function(d) { return x(d[1]) - x(d[0]); })
+      .attr("fill", function(d) { return color(d[0]); });
+
+  g.append("text")
+      .attr("class", "caption")
+      .attr("x", x.range()[0])
+      .attr("y", -6)
+      .attr("fill", "#000")
+      .attr("text-anchor", "start")
+      .attr("font-weight", "bold")
+      .text("Percentage of Population with Access to Public Transportation");
+
+  g.call(d3.axisBottom(x)
+      .tickSize(13)
+      .tickValues(color.domain()))
+    .select(".domain")
+      .remove();
+
+  var json = "data/final/Asian.json"
+  d3.json(json, function(error, topology) {
+    if (error) throw error;
+
+    svg.append("g")
+      .selectAll("path")
+      // .attr("transform", "translate(0,10)");
+      .data(topojson.feature(topology, topology.objects.tracts).features)
+      .enter().append("path")
+        .attr("fill", function(d) { return color(d.properties.density); })
+        .attr("d", path);
+
+    svg.append("path")
+        .datum(topojson.feature(topology, topology.objects.counties))
+        .attr("fill", "none")
+        .attr("stroke", "#000")
+        .attr("stroke-opacity", 0.3)
+        .attr("d", path);
+  });
+
+function draw(json){
+  d3.json(json, function(error, topology) {
+    if (error) throw error;
+
+    svg.selectAll("path")
+      // .attr("transform", "translate(0,10)");
+      .data(topojson.feature(topology, topology.objects.tracts).features)
+      .attr("fill", function(d) { return color(d.properties.density); })
+      .attr("d", path);
+  });
+
+}
+
+
+function changeEthnicity(){
+  json = ethnicity.options[ ethnicity.selectedIndex ].value;
+  draw(json)
+}
+
+
+  </script>
+
+
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="span4">
+          <h2>Files Submitted</h2>
+          <p>index.html</p>
+          <p>visualization.html</p>
+          <p>more_info.html</p>
+          <p>Phase1: Data Design PDF</p>
+          <p>Challenges.txt</p>
+          <p>Data files -- [ethicities].json</p>
+          <!-- <p><a class="btn" href="#">View details &raquo;</a></p> -->
+        </div>
+        <div class="span4">
+          <h2>Data Sources</h2>
+          <p><a href="https://data.chhs.ca.gov/dataset/walkable-distance-public-transit-2008-2012" target="_blank">CCHS Walkable Distance Public Transit Dataset</a></p>
+          <p><a href="https://paldhous.github.io/ucb/2016/intro-data/datasets.html" target="_blank">Urban Displacement Data</a></p>
+          <!-- <p><a class="btn" href="#">View details &raquo;</a></p> -->
+        </div>
+        <div class="span4">
+          <h2>Visualization Sources</h2>
+          <p><a href="https://d3js.org/" target="_blank">D3</a></p>
+          <p><a href="https://bl.ocks.org/mbostock/5562380" target="_blank">California Population Density</a></p>
+          <p><a href="http://scottpham.com/california-counties/" target="_blank">California Counties</a></p>
+          <!-- <p><a class="btn" href="#">View details &raquo;</a></p> -->
+        </div>
+        <div class="span4">
+          <h2>References</h2>
+          <p><a href="../files/hcirailferrybus51narrativeandexamples11-26-13socalmtcsac.pdf" target="_blank">Maizlish, N., D. Tran, and D. M. Bustamante-Zamora. "Healthy communities data and indicators project: how-to manual and illustrative guide. Richmond and San Francisco (CA): California Department of Public Health Office of Health Equity and University of California." Institute for Health & Aging (2014).</a></p>
+          <p><a href="https://www.cdph.ca.gov/Programs/OHE/Pages/Healthy-Communities-Data-and-Indicators-Project-(HCI).aspx" target="_blank">Healthy Communities Data & Indicators Project (HCI)</a></p>
+          <p><a href="http://www.apta.com/resources/reportsandpublications/Documents/APTA_Health_Benefits_Litman.pdf" target="_blank">Evaluating Public Transportation Health Benefits</a></p>
+          <p><a href="http://humantransit.org/2011/04/basics-walking-distance-to-transit.html" target="_blank">Walking Distance</a></p>
+          <!-- <p><a class="btn" href="#">View details &raquo;</a></p> -->
+       </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>Created by <a href="https://dhawaljoh.github.io/" target="_blank">Dhawal Joharapurkar</a> (djoharap@ucsc.edu) in collaboration with <a href="https://users.soe.ucsc.edu/~lodha/" target="_blank">Prof. Suresh Lodha</a></br>
+          Designed or CMPS263 Data Discovery and Visualization, Winter 2018</p>
+          <b>GitHub: </b><a href="https://github.com/dhawaljoh/Housing-and-Transportat:ion-Community-Stratification" target="_blank">https://github.com/dhawaljoh/Housing-and-Transportation-Community-Stratification</a>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--     <script src="bootstrap/js/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap-transition.js"></script>
+    <script src="bootstrap/js/bootstrap-alert.js"></script>
+    <script src="bootstrap/js/bootstrap-modal.js"></script>
+    <script src="bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="bootstrap/js/bootstrap-tab.js"></script>
+    <script src="bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="bootstrap/js/bootstrap-popover.js"></script>
+    <script src="bootstrap/js/bootstrap-button.js"></script>
+    <script src="bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="bootstrap/js/bootstrap-typeahead.js"></script> -->
+
+  </body>
+</html>

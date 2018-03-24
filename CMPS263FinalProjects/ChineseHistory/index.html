@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="linechartStyle.css">
+    <title>Chinese History: Rise and Fall</title>
+</head>
+
+
+<body>
+    <div class = "container">
+        <h2 style="text-align: center">The Rise and Fall of Chinese History: 221 BC to 2018 AC</h2>
+        <p>
+           Tens of millions of people died of starvation during 1959 to 1961 in China, yet in less than 40 years China became the 2nd largest economy in the world. There are many ways to explain the success of the last 4 decades of China, one of which is through the perspective of history. We show the rises and the falls throughout Chinese history by using an interactive line chart, which presents the evolutoin of Chinese territory. By understanding the history of China, we could partly explain why China had such a rapid growth. 
+        </p>
+    
+    </div> 
+
+    
+    <p1 id = "annotation_1"></p1>
+    <svg width="1600" height="700">
+    <p id = "annotation"></p>
+    </svg>
+    
+    <select id="inds"></select>
+    
+    <div id="clearAll">
+	<input name="clearAllButton"
+	 type="button"
+	 value="Clear All"
+	 onclick="clearAll()" />
+    </div>
+    
+    
+    <div class = "note" id ="note"  style="position:relative;right:0px; font-size:16px; text-align:center;" id="myParagraph">
+        <div class = 'author'>
+            <h4 style="font-weight: bold"><br/>Created by</h4>
+                <p style="position:relative;top:0px;right:0px; font-size:16px; text-align:center;" id="myParagraph">
+                    Boyu Zhang (bzhang33@ucsc.edu)<br> 
+                    Jiayi Yang (jyang119@ucsc.edu)<br>
+                    Kuo Pei (kupei@ucsc.edu) in collaboration with Suresh K Lodha</p>
+                <p>Github Link: <a href="https://blarryy.github.io/D3-Final-Submission/">https://blarryy.github.io/D3-Final-Submission/</a></p>
+            <h4 style="font-weight: bold"><br/>Designed for</h4>
+                <p id="myParagraph">CMPS 263: Data Visualization, Winter 2018</p>
+        </div>
+        
+    
+        <div class="row">
+          <div class="column left">
+            <b>Files Submitted</b>
+            <p>index.html<br>linechartStyle.css<br>linechart.js<br>territory_dataWithBegining.csv</p>
+          </div>
+          <div class="column middle1">
+            <b>Data Sources</b>
+            <p>
+            <a data-brackets-id='62' href="https://www.reddit.com/r/dataisbeautiful/comments/5p1sd4/chinese_dynasties_4000_years_of_history_oc/">Chinese Dynasties: 4000+ years of history</a><br>
+            <a data-brackets-id='62' href="http://www.360doc.com/content/14/0113/20/2006953_345037706.shtml">The population statistics of Chinese history</a><br>
+            </p>
+          </div>
+          <div class="column middle2">
+            <b>Visualization sources</b>
+            <p id="myParagraph">
+            <a data-brackets-id='62' href="https://sureshlodha.github.io/CMPS165_Fall2016_FinalProjects/ClimateChange/">Climate Change</a>
+            <br/>
+            <a data-brackets-id='62' href="https://sureshlodha.github.io/CMPS165_Winter15_FinalProjects/California_Immigrants/">Immigration into California, 1850-2010</a>
+        </p>
+          </div>
+          <div class="column right">
+            <b>Code Sources</b>
+            <p>...</p>
+          </div>
+        </div>
+    </div>
+
+</body>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="linechart.js"></script>
+
