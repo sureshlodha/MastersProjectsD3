@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<head>
+  <title>Visualization of Air Quality (PM 10) in Delhi, India 2004-2015</title>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://d3js.org/d3-geo-projection.v1.min.js"></script>
+  <script src="functions.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+  <style>
+    body {
+      font-family:"avenir next", Arial, sans-serif;
+      font-size: 12px;
+      color: #696969;
+    }
+
+    .ticks {
+      font-size: 10px;
+    }
+
+    .track,
+    .track-inset,
+    .track-overlay {
+      stroke-linecap: round;
+    }
+
+    .track {
+      stroke: #000;
+      stroke-opacity: 0.3;
+      stroke-width: 10px;
+    }
+
+    .track-inset {
+      stroke: #dcdcdc;
+      stroke-width: 8px;
+    }
+
+    .track-overlay {
+      pointer-events: stroke;
+      stroke-width: 50px;
+      stroke: transparent;
+      cursor: crosshair;
+    }
+
+    .handle {
+      fill: #fff;
+      stroke: #000;
+      stroke-opacity: 0.5;
+      stroke-width: 1.25px;
+    }
+  </style>
+</head>
+
+
+
+<body>
+<h1 id="titles"; align = "center">Visualization of Air Quality (PM 10) in Delhi, India 2004-2015</h1>
+<p style="margin-left:100px; margin-right:200px; text-align:justify">
+  	This visualization analyzes pollution data in Delhi, India from years 2004 to 2015 with a municipality ward and neighborhood level granularity. The pollution data is PM10 levels in nine neighborhoods of Delhi. With the help of the visualizations, we can see yearly pattern recurrences. October to June are the months where there are elevated levels in the PM10 in all the areas. During these months, the PM10 levels go beyond unhealthy and hazardous categories as defined by the US EPA. Industrial areas like Mayapuri, Shahzada Bagh and Shahdara usually have higher levels of pollution because of industrial discharge, vehicles and effluence from the factories. Residential areas like Chandni Chowk, Siri Fort, Nizamuddin, Pitampura, Sarojini Nagar and Janakpuri are very busy places and have pollution due to vehicles and construction. This mixed with the the pollution from the crop burning increases the pollution levels. The residential neighborhoods also have high pollution levels during October and November because of Diwali, the festival of lights and fireworks that can last upto five days.
+</p>
+
+
+
+ <div>
+    <span style="color:black;position: relative;
+   top: 400px;
+   left: 885px;">Siri Fort</span> 
+   <span style="color:black;position: relative;
+   top: 350px;
+   left: 870px;"">Nizamuddin</span>
+   <span style="color:black;position: relative;
+   top: 278px;
+   left: 790px;"">Chandni Chowk</span>
+   <span style="color:black;position: relative;
+   top: 240px;
+   left: 760px;"">Shahdara</span>
+   <span style="color:black;position: relative;
+   top: 200px;
+   left: 560px;"">Pitampura</span>
+   <span style="color:black;position: relative;
+   top: 250px;
+   left: 415px;"">Shahzada Bagh</span>
+   <span style="color:black;position: relative;
+   top: 290px;
+   left: 390px;"">Mayapuri</span>
+   <span style="color:black;position: relative;
+   top: 300px;
+   left: 220px;"">Janakpuri</span>
+   <span style="color:black;position: relative;
+   top: 360px;
+   left: 260px;"">Sarojini Nagar</span>
+</div>
+
+<div>
+	<span style="color:black;position: absolute;
+   top: 400px;
+   left: 1100px;">Note:Neighborhoods are depicted as combination of wards.</span>
+   <spab style = "color:black;position: absolute;
+   top: 415px;
+   left: 1125px;">The boundary of displayed neighborhoods are approximate.</span>
+</div>   
+
+<div id ="map"></div>
+<script>
+var color_na = d3.rgb("#d4d4d4");
+    // only works if array.length-1 is between 3 and 9 (d3 color scheme)
+var quantiles = [0, 0.2, 0.4, 0.6, 0.8, 1];
+
+
+var w = 502.2, ht = 540;
+    var projection = d3.geoMercator()
+        .scale(53939.6396099)
+        .center([77.09078699999999,28.643820032223946]) //projection center
+        .translate([w/2,ht/2]) //translate to center the map in view
+    var svg_map0 = d3.select("body").insert("svg")
+                  .attr("id", "map")
+                  .attr("height", ht)
+                  .attr("width", w);
+    //Generate paths based on projection
+    var path = d3.geoPath()
+    .projection(projection);
+    //var path = d3.geoPath(d3.geoRobinson());
+
+
+    var svg_map = d3.select("body").insert("svg")
+                  .attr("id", "map")
+                  .attr("height", ht)
+                  .attr("width", w);
+
+    
+    var svg_map1 = d3.select("body").insert("svg")
+    		      .attr("id", "map")
+    	    	  .attr("height", 250)
+                  .attr("width", w)
+                  .attr("transform", "translate(" + 0 + ", " + -300 + ")");
+ 
+    // init legend container
+    svg_map1.append("g")
+        .attr("class", "legend");
+    svg_map1.append("g")
+        .attr("class", "legend_title")
+        .append("text");
+    svg_map1.append("g")
+    	.attr("class", "legend_body1")
+    	.append("text");
+    svg_map1.append("g")
+    	.attr("class", "legend_body2")
+    	.append("text");
+	svg_map1.append("g")
+    	.attr("class", "legend_body3")
+    	.append("text");
+	svg_map1.append("g")
+    	.attr("class", "legend_body4")
+    	.append("text");
+    svg_map1.append("g")
+    	.attr("class", "legend_body5")
+    	.append("text");
+	svg_map1.append("g")
+    	.attr("class", "legend_body6")
+    	.append("text");
+    svg_map1.append("g")
+    	.attr("class", "legend_body7")
+    	.append("text");
+
+    // init bars container
+    var margin = {top: 50, right:10, bottom: 100, left:30};
+    var svgBarsWidth = 480 - margin.left - margin.right,
+        svgBarsHeight = 200 - margin.top - margin.bottom;
+
+    var x = d3.scaleBand()
+                .rangeRound([0, svgBarsWidth])
+                .padding(.05);
+    var y = d3.scaleLinear().range([svgBarsHeight, 0]);
+
+    var svg_bars = d3.select("body")
+        .append("svg")
+          .attr("id", "bars")
+          .attr("width", svgBarsWidth + margin.left + margin.right)
+          .attr("height", svgBarsHeight + margin.top + margin.bottom)
+          .attr("transform", "translate(" + 1000 + ", " + -200 + ")")             
+        .append("g")
+          .attr("class", "bars")         
+          .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+
+
+
+
+</script>
+
+
+<script>
+var dataset;
+
+
+var formatDateIntoYear = d3.timeFormat("%Y");
+var formatDate = d3.timeFormat("%b %Y");
+var parseDate = d3.timeParse("%m/%d/%y");
+
+var startDate = new Date("2004-01-10"),
+    endDate = new Date("2015-12-31");
+
+var margin = {top:0, right:250, bottom:0, left:350},
+    width = 960,
+    height = 100;
+
+////////// slider //////////
+
+var svgSlider = d3.select("body")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height)
+    .attr("transform", "translate(" + 0 + ", " + -200 + ")");
+var z = d3.scaleTime()
+    .domain([startDate, endDate])
+    .range([0, width])
+    .clamp(true);
+
+var slider = svgSlider.append("g")
+    .attr("class", "slider")
+    .attr("transform", "translate(" + margin.left + "," + height / 2 + ")");
+
+slider.append("line")
+    .attr("class", "track")
+    .attr("x1", z.range()[0])
+    .attr("x2", z.range()[1])
+  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-inset")
+  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-overlay")
+    .call(d3.drag()
+        .on("start.interrupt", function() { slider.interrupt(); })
+        .on("start drag", function() { update(z.invert(d3.event.x)); }));
+
+slider.insert("g", ".track-overlay")
+    .attr("class", "ticks")
+    .attr("transform", "translate(0," + 18 + ")")
+  .selectAll("text")
+    .data(z.ticks(10))
+    .enter()
+    .append("text")
+    .attr("x", z)
+    .attr("y", 10)
+    .attr("text-anchor", "middle")
+    .text(function(d) { return formatDateIntoYear(d); });
+
+var handle = slider.insert("circle", ".track-overlay")
+    .attr("class", "handle")
+    .attr("r", 9);
+
+var label = slider.append("text")  
+    .attr("class", "label")
+    .attr("text-anchor", "middle")
+    .text(formatDate(startDate))
+    .attr("transform", "translate(0," + (-25) + ")")
+
+
+d3.json("pollutiondata.json", function(error, d) {
+
+      if (error) throw error;
+
+      let data_all = d['Pollution'];
+      dataset = data_all;
+      let data = data_all['Oct 2004'];
+      let color = calcColorScale(data);
+
+      // load map data and render it
+      d3.json("delhi_wards.geojson", function(error, geodata) {
+        if (error) throw error;
+
+        // init map
+        svg_map.append("g")
+          .attr("class", "features")
+          .selectAll("path")
+          .data(geodata.features)
+          .enter().append("path")
+            .attr("d", path)
+            .attr("id", function(d) { return d.id; })
+            .call(fillMap, color, data)
+          .append("title")
+            .call(setPathTitle, data);
+
+        
+        // init legend
+        renderLegend(color, data);
+        renderBars(color, data);
+
+      }); // map data
+
+
+    }); 
+
+
+
+
+function update(h) {
+  // update position and text of label according to slider scale
+  handle.attr("cx", z(h));
+  label
+    .attr("x", z(h))
+    .text(formatDate(h));
+
+
+  
+  //d3.select(formatDate(h)).on("input", function() {
+  let upd_color = calcColorScale(dataset[formatDate(h)]);
+  updateMap(upd_color, dataset[formatDate(h)]);
+  renderLegend(upd_color, dataset[formatDate(h)]);
+  renderBars(upd_color, dataset[formatDate(h)]);
+  //});
+
+
+}
+</script>
+
+  <div class="row"; style="position: relative;
+   top: -200px;
+   left: 20px;">
+                    <div class="offset-right">
+                        <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="createdByCard">
+                                    <div class="cardInnerMargin">
+                                        <div class="center-align">
+                                            Created by Santosh Devarakonda in collabaration with Suresh K. Lodha. <br><br>
+                                        </div>
+                                     </div>
+                                </div>
+                            </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                </div>
+
+
+<div class="row"; style="position: relative;
+   top: -200px;
+   left: 50px;">
+                    <div class="offset-left">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="cardInnerMargin">
+                                    <span class="cardTitle">Submitted Files</span>
+                                    <ul>
+                                        <li>index.html</li>
+                                        <li>function.js</li>
+                                        <li>pollutiondata.json</li>
+                                        <li>delhi_wards.json</li>
+                                        <li>README</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="cardInnerMargin">
+                                    <span class="cardTitle">Data Sources</span>
+                                    <ul>
+                                        <li><a href="https://data.gov.in/catalog/historical-daily-ambient-air-quality-data">Delhi pollution data</a></li>
+                                        <li><a href="http://www.arcgis.com/home/item.html?id=165e7c8ae6744dd5ad04537c6f938ffd">ArcGIS Delhi wards shape file</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="cardInnerMargin">
+                                    <span class="cardTitle">Related Visualization Sources</span>
+                                    <ul>
+                                        <li><a href="http://aqicn.org/map/delhi/">Aqicn website</a></li>
+                                        <li><a href="https://app.cpcbccr.com/ccr/#/caaqm-dashboard-all/caaqm-landing">Central Pollution Control Board (CPCB), India</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="cardInnerMargin">
+                                    <span class="cardTitle">Code Sources</span>
+                                    <ul>
+                                        <li><a href="https://github.com/santoshdns/msprj_delpollution">Github link for source code</a></li>
+                                        <li><a href="http://bl.ocks.org/d3noob/6eb506b129f585ce5c8a">Favorite Tooltip by d3noob</a></li>
+                                        <li><a href="http://bl.ocks.org/tomschulze/961d57bd1bbd2a9ef993f2e8645cb8d2">d3.js slider map</a></li>
+                                        <li><a href="http://getbootstrap.com/">Bootstrap</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>        
+                </div>
+</body>

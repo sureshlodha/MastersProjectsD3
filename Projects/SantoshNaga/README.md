@@ -1,0 +1,2 @@
+# msprj_delpollution
+This visualization analyzes pollution data in Delhi, India from years 2004 to 2015 with a municipality ward and neighborhood level granularity. The pollution data is PM10 levels in nine neighborhoods of Delhi. With the help of the visualizations, we can see yearly pattern recurrences. October to June are the months where there are elevated levels in the PM10 in all the areas. During these months, the PM10 levels go beyond unhealthy and hazardous categories as defined by the US EPA.

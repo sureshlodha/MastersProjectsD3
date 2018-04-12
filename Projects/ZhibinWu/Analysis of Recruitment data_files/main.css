@@ -1,0 +1,80 @@
+body {
+    background-color: #f2f3f2 !important;
+}
+
+/*h5 {*/
+    /*text-align: center;*/
+/*}*/
+
+h3, h5 {
+    text-align: center;
+}
+
+#title {
+    text-align: center;
+    height: 100px;
+}
+
+#chart-1 {
+    /*border: 1px solid black ;*/
+    height: 500px;
+}
+
+.arc text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.arc path {
+  stroke: #fff;
+}
+
+polyline{
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
+}
+
+/*chart 2: map for job opportunities*/
+#chart-2 {
+    height: 800px;
+    /*width: 60%;*/
+}
+
+/*chart 4*/
+.bar { fill: rgb(152, 171, 197); }
+
+/*chart 5*/
+#chart-5 {
+    height: 700px;
+}
+#chart-5-legend {
+    height: 700px;
+}
+
+#legend-div {
+    position: absolute;
+    left: -100px;
+    bottom: -30px;
+}
+
+.circle {
+    background: #1a9850;
+}
+
+/*chart 6*/
+.links line {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.d3-tip {
+    background: #FFFFFF  !important;
+}
+
