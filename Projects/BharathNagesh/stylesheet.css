@@ -1,0 +1,203 @@
+
+
+/*
+Line Chart
+*/
+
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: geometricPrecision;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2.5px;
+}
+
+.grid .tick {
+    stroke-dasharray: 5, 5;
+    stroke: lightgrey;
+    opacity: 0.5;
+}
+.grid path {
+      stroke-width: 0;
+}
+
+text{
+    font-weight: bold;
+}
+
+
+/*
+Tooltip
+*/
+
+
+.chart {
+  height: 500px;
+  position: relative;
+}
+
+.tt {
+	background-color: #fff;
+	padding: 8px;
+	outline: 1px solid #ccc;
+	display: none;
+	position: absolute;
+	font-size: 14px;
+	text-transform: uppercase;
+}
+
+
+/*
+Bar Graph
+*/
+
+
+.bar--positive {
+    fill: #3878ff;
+    opacity: 0.85;
+}
+
+.bar--negative {
+    fill: #FF0D00;
+    opacity: 0.85;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+
+
+
+/*
+Footer
+*/
+
+.foot-links a, .foot-links p {
+	display: block;
+	color: rgb(63, 63, 63);
+	transition: all 0.2s ease-in-out;
+	-webkit-transition: all 0.2s ease-in-out;
+	text-decoration: none;
+	font-family: OpenSansRegular,
+	Arial,
+	sans-serif;
+	font-size: 10px;
+	color: rgb(63, 63, 63);
+	padding-bottom: 5px;
+	text-shadow: rgb(255, 255, 255)1px 1px 0px;
+
+}
+
+.seldist {
+	fill: none;
+	stroke: yellow;
+	stroke-width: 1;
+}
+
+a: link {
+	color: blue;
+}
+.foot-links img {
+	padding-top: 5px;
+}
+ #footer {
+	background: rgb(241, 241, 241);
+	border-top: 1px solid rgb(222, 222, 222);
+	margin-top: -2px;
+	padding-top: 0px;
+	padding-bottom: 5px;
+	margin-left: 80px;
+	margin-right: 80px;
+	margin-bottom: 25px;
+}
+
+.foot-header {
+	font-family: OpenSansBold,
+	Arial,
+	sans-serif;
+	font-size: 18px;
+	color: rgb(63, 63, 63);
+	padding-bottom: 20px;
+	text-shadow: rgb(255, 255, 255)1px 1px 0px;
+}
+
+ #footer.container {
+	max-width: 1300px;
+	max-width: 1300px;
+}
+
+table.details, th, td {
+	border-collapse: separate;
+	border-spacing: 10px;
+	font-weight: normal;
+}
+
+ #bottom-footer {
+	margin-bottom: 20px;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+ #bottom-footer a {
+	text-decoration: none;
+	color:  #626262;
+	-webkit-transition: all.2s ease-in-out;
+	-moz-transition: all.2s ease-in-out;
+	-o-transition: all.2s ease-in-out;
+	-ms-transition: all.2s ease-in-out;
+	transition: all.2s ease-in-out;
+	font-size: 12px;
+	padding: 0px 15px;
+	border-right: 1px solid #ccc;
+	font-family: 'OpenSansRegular',
+	Arial,
+	sans-serif;
+	color:  #626262;
+	padding: 0 12px;
+	text-shadow: 1px 1px 0 rgba(255, 255, 255, 1);
+}
+ #bottom-footer.phone img {
+	margin-right: 7px;
+}
+ #bottom-footer.phone.red {
+	font-size: 16px;
+	margin-top: -7px;
+	font-family: 'OpenSansRegular',
+	Arial,
+	sans-serif;
+	font-size: 18px!important;
+	color:  #d10029!important;
+	position: relative;
+	top: -5px;
+	text-shadow: 1px 1px 0 rgba(255, 255, 255, 1)!important;
+}
+ #bottom-footer.phone.red small {
+	font-family: 'OpenSansRegular',
+	Arial,
+	sans-serif;
+	font-size: 12px!important;
+	display: block;
+	color:  #626262!important;
+	text-shadow: 1px 1px 0 rgba(255, 255, 255, 1)!important;
+	margin-top: -5px;
+}
+ #final-footer {
+	font-size: 11px;
+	color:  #666;
+}
+ #final-footer i {
+	font-size: auto;
+}
+
