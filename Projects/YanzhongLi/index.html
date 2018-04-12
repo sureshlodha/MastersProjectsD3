@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<head>
+  <title>F-1 Student: Work your way to U.S. citizenship</title>
+  <meta name="author" content="YanzhongLi">
+</head>
+<style>
+    .states :hover {
+      opacity: 0.5;
+    }
+
+    .state-borders {
+      fill: none;
+      stroke: grey;
+      stroke-width: 0.5px;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      pointer-events: none;
+    }
+    
+    .tooltip {
+      position: absolute;
+      text-align: center;
+      width: 80px;
+      height: 55px;
+      padding: 5px;
+      margin-top: -20px;
+      font: 12px sans-serif;
+      background: #ddd;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+    
+    .bar { 
+      fill: steelblue; 
+    }
+    
+    #title {
+      text-align: center;
+    }
+    
+    .description {
+        position: absolute;
+        left: 80px;
+        text-align:justify;
+        font-size: 14pt;
+        width: 1150px;
+    }
+    
+    .authorInfo {
+        position: absolute;
+        left: 80px;
+        text-align:center;
+        font-size: 12pt;
+        width: 1150px;
+    }
+</style>
+
+<body>
+
+    <h1 id="title">F-1 Student: Work your way to U.S. citizenship</h1>
+    
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script>
+        var margin = 30;
+        var h1bDesTopPadding = 90;
+        var permDesTopPadding = 600;
+        var authorInfoTopPadding = 1100;
+        var permTopPadding = 620;
+        var h1bTopPadding = 100;
+        var legendLeftPaddingToMap = 250;
+        var svgHeight = 1600;
+        var barChartHeight = 300;
+        var barChartWidth = 450;
+        var width = 1300 - margin * 2;
+        var mapSize = 0.5;
+        var barLeftPadding = 150;
+        var mapLeftPadding = 700;
+        var h1bMapDomain = [0, 1000, 3000, 10000, 30000, 117000];
+        var permMapDomain = [0, 400, 800, 1300, 6000, 13000];
+        var colorRange = ["#fee5d9","#fcae91","#fb6a4a","#de2d26","#a50f15"];
+        // set the size and ranges for bar chart
+        var y = d3.scaleBand()
+                  .range([barChartHeight, 0])
+                  .padding(0.1);
+        var x = d3.scaleLinear()    //设为20考虑到bar上的数字不能被挤到太左
+                  .range([20, barChartWidth]);
+        // create svg for barchart and map
+        var svg = d3.select("body").append("svg")
+                    .attr("width", width + 2*margin)
+                    .attr("height", svgHeight);
+        var svgPERMBar = svg.append("g").attr("id", "svgPERMBar");
+        var svgH1BBar = svg.append("g").attr("id", "svgH1BBar");
+        var svgMap = svg.append("g").attr("id", "svgMap");
+//        var svgDescription = svg.append("g").attr("id", "svgDescription");
+        var mapPath = d3.geoPath();
+        var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("display", "none");
+        
+        
+        plotMapAndBar("h1b");
+        plotMapAndBar("perm");
+        addDescription();
+        addAuthorInfo();
+        
+        function addAuthorInfo() {
+            var authorInfoDIV = d3.select("body").append("div")
+                       .attr("class", "authorInfo")
+                       .style("top", authorInfoTopPadding + "px");
+            
+            authorInfoDIV.append('div').html("Created by: <a href='https://www.linkedin.com/in/yanzhongli' target='_blank'>Yanzhong Li</a> &nbsp &nbsp Advised by: <a href='https://www.soe.ucsc.edu/people/lodha' target='_blank'>Suresh Lodha</a>");
+            authorInfoDIV.append('div').html("Data Source: <a href='https://travel.state.gov/content/visas/en/law-and-policy/statistics/immigrant-visas.html' target='_blank'>Immigrant Visa Stats</a>, <a href='https://travel.state.gov/content/dam/visas/employment-cut-off-dates/EmploymentChina.pdf' target='_blank'>Final Action Dates</a>, <a href='https://travel.state.gov/content/visas/en/law-and-policy/bulletin/2017/visa-bulletin-for-june-2017.html' target='_blank'>Visa Bulletin</a>, <a href='http://www.nolo.com/legal-encyclopedia/if-priority-date-current-moved-backward-can-i-still-green-card.html' target='_blank'>Retrogression Example</a>");
+            authorInfoDIV.append('div').html("May 30th, 2017 @UCSC");
+            
+            
+        }
+        
+        function addDescription() {
+            // H1B description
+            var h1bDes = "The distribution of H1B applicants across the U.S. in 2016 is shown on map. California and Texas, being the most foreign-worker-friendly states, received 183,652 applicants for H1B visas. The IT company INFOSYS sponsored for 25,405 employees, followed by Capgemini, Tata and then IBM who sponsored for 12,381 H1B applicants.";
+            d3.select("body").append("div")
+                       .attr("class", "description")
+                       .style("top", h1bDesTopPadding + "px")
+	                   .html(h1bDes);
+            
+            // PERM description
+            var permDes = "F1 Student with a Bachelor's or Master's degree is most likely to apply for a Green Card of EB2/3 type. There are in total 125,823 EB2/3 applicants in 2016, and 51.88% of them work in state of California, Texas, New Jersy or New York. The I.T. Company COGNIZANT was ranked top 1 in sponsoring for 4,271 of its employees, most of whom work in Texas.";
+            d3.select("body").append("div")
+                       .attr("class", "description")
+                       .style("top", permDesTopPadding + "px")
+	                   .html(permDes);
+        }
+        
+        function plotMapAndBar(permORh1b) {
+            // initialize the file name depending on it's a set of H1B or PERM
+            var mapCSVFilePath = "./prepareData/mapData/permMap.csv";
+            if (permORh1b == "h1b") {
+                    mapCSVFilePath = "./prepareData/mapData/h1bMap.csv";
+            }
+            
+            d3.csv(mapCSVFilePath, function(data) {
+                // initialize variables depending on it's a H1B set or PERM set
+                var setTopPadding = permTopPadding;
+                var legendText = "EB2/3 Green Card Applicant Counts";
+                var colorDoamin = permMapDomain;
+                var qColor = d3.scaleQuantile()
+                                .domain(colorDoamin)
+                                .range(colorRange);
+                var svgBarName = "svgPERMBar";
+                var toolTipText = "Green Card";
+                if (permORh1b == "h1b") {
+                    colorDoamin = h1bMapDomain;
+                    setTopPadding = h1bTopPadding;
+                    legendText = "H1B Visa Applicant Counts";
+                    qColor = d3.scaleQuantile()
+                                .domain(colorDoamin)
+                                .range(colorRange);
+                    svgBarName = "svgH1BBar";
+                    toolTipText = "H1B Visa";
+                }
+                
+                // get the permData from csv
+                var permData = {};
+                for (i = 0; i < data.length; i++) {
+                    permData[data[i].stateCode] = data[i];
+                }            
+
+                // draw the map from json file and information from permData
+                // and draw the bar chart according to click event
+                d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+                    if (error) throw error;
+
+                    // draw the default bar chart here
+                    generateBarChart(permORh1b, 'default');
+
+                    // mesh geo data with permData
+                    var statesData = new Array();
+                    var stateGeoData = topojson.feature(us, us.objects.states).features;
+                    for (i = 0; i < stateGeoData.length; i++) {
+                        var newObject = stateGeoData[i];
+                        if (newObject.id != "11") {
+                            newObject.appCount = permData[parseInt(newObject.id)].applicantsCount;
+                            newObject.stateName = permData[parseInt(newObject.id)].stateName;
+                            newObject.stateAbbr = permData[parseInt(newObject.id)].stateAbbr;
+                            statesData.push(newObject);
+                        }
+                    }
+                    
+                    // plot the map
+                    svgMap.append("g")
+                          .attr("class", "states")
+                        .selectAll("path")
+                        .data(statesData)
+                        .enter().append("path")
+                          .attr("transform", "translate(" + mapLeftPadding + "," + setTopPadding + ") scale(" + mapSize + ")")
+                          .attr("d", mapPath)
+                          .attr("fill", function(d) {
+                                return qColor(d.appCount);
+                            })
+                          .on("mouseover", function() {
+                              tooltip.style("display", "inline");
+                            })
+                          .on("mousemove", function(d) {
+                              tooltip.html("<strong>" + d.stateName + "</strong></br>" + parseInt(d.appCount).toLocaleString() + "</br>" + toolTipText + "</br>Applicants")
+                                 .style("left", (d3.event.pageX - 30) + "px")
+                                 .style("top", (d3.event.pageY - 45) + "px");
+                            })
+                          .on("mouseout", function() {
+                              tooltip.style("display", "none");
+                            })
+                          .on("click", function(d) {
+                                var svgBarElement = document.getElementById(svgBarName);
+                                while (svgBarElement.firstChild) {
+                                    svgBarElement.removeChild(svgBarElement.firstChild);
+                                }
+                                generateBarChart(permORh1b, d.stateAbbr);
+                            });
+                    
+                    // plot the borders
+                    svgMap.append("g")
+                          .attr("class", "borders")
+                          .append("path")
+                          .attr("transform", "translate(" + mapLeftPadding + "," + setTopPadding + ") scale(" + mapSize + ")")
+                          .attr("class", "state-borders")
+                          .attr("d", mapPath(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+                
+                
+                    /*** plot color legend ***/
+                    var colorLegend = svgMap.append("g")
+                        .attr("class", "colorLegend")
+                        .attr("transform", "translate(" + (mapLeftPadding + legendLeftPaddingToMap) + "," + setTopPadding + ")");
+                    var legendRectLens = [30, 60, 90, 120, 200];
+                    // plot color rects
+                    colorLegend.selectAll("rect")
+                      .data(legendRectLens)
+                      .enter().append("rect")
+                        .attr("height", 12)
+                        .attr("x", function(d, i) { 
+                                return i == 0 ? 0 : legendRectLens[i-1]; })
+                        .attr("width", function(d, i) { 
+                                return i == 0 ? d : d - legendRectLens[i-1]; })
+                        .attr("fill", function(d,i) { return colorRange[i]; });
+                    // write legend title
+                    colorLegend.append("text")
+                        .attr("class", "caption")
+                        .attr("x", 0)
+                        .attr("y", -10)
+                        .attr("fill", "#000")
+                        .attr("text-anchor", "start")
+                        .attr("font-weight", "bold")
+                        .text(legendText);
+                    // plot legend ticks
+                    var legendScale = d3.scaleQuantile()
+                                .domain(colorDoamin)
+                                .range([0, 30, 60, 90, 120, 200]);
+                    colorLegend.append("g")
+                        .attr("class", "legendTicks")
+                        .call(d3.axisBottom(legendScale)
+                                .tickSize(13)
+                                .tickValues(colorDoamin));
+                });
+            });
+        }
+        
+        function generateBarChart(permORh1b, stateAbbr) {
+            // initialize variables depending on we are ploting for perm or h1b
+            var filePath = "./prepareData/barData/PermComByStates/";
+            var setTopPadding = permTopPadding;
+            var titleText = "Top 15 " + stateAbbr + " Companies sponsoring Green Card Applicants";
+            var svgBar = svgPERMBar;
+            if (permORh1b == "h1b") {
+                filePath = "./prepareData/barData/H1BComByStates/";
+                setTopPadding = h1bTopPadding;
+                titleText = "Top 15 " + stateAbbr + " Companies sponsoring H1B Visa Applicants";
+                svgBar = svgH1BBar;
+            }
+            var xAxisHeight = barChartHeight + setTopPadding;
+            
+            if (stateAbbr == 'default') {
+                var chartTitle = svgBar.append("text")
+                        .attr("transform", "translate(" + (barLeftPadding) + ", " + (setTopPadding + barChartHeight/2) + ")")
+                        .style("font", "25px sans-serif")
+                        .text("Please choose a state on the map -->");
+            } else {
+                //add chart title below x axis
+                var chartTitle = svgBar.append("text")
+                            .attr("transform", "translate(" + (barLeftPadding + 30) + ", " + (setTopPadding + barChartHeight + 35) + ")")
+                            .text(titleText);
+
+                //draw the bar chart
+                d3.csv(filePath + stateAbbr + ".csv", function(data) {
+                     data.forEach(function(d) {
+                        d.new_foreign_worker_count = +d.new_foreign_worker_count;
+                      });
+
+                    // Scale the range of the data in the domains
+                    x.domain([0, d3.max(data, function(d){ return d.new_foreign_worker_count; })])
+                    y.domain(data.map(function(d) { return d.Company; }))
+
+                    // append the rectangles for the bar chart
+                    svgBar.append("g")
+                      .selectAll(".bar")
+                      .data(data)
+                      .enter()
+                      .append("rect")
+                          .attr("transform", "translate(" + barLeftPadding + ", " + setTopPadding + ")")
+                          .attr("class", "bar")
+                          .attr("width", function(d) {return x(d.new_foreign_worker_count); } )
+                          .attr("y", function(d) { return y(d.Company); })
+                          .attr("height", y.bandwidth());
+
+                    // add the x Axis
+                    svgBar.append("g")
+                      .attr("transform", "translate(" + barLeftPadding + "," + xAxisHeight + ")")
+                      .call(d3.axisBottom(x));
+
+                    // add the y Axis
+                    svgBar.append("g")
+                      .attr("transform", "translate("+ barLeftPadding + ", " + setTopPadding + ")")
+                      .call(d3.axisLeft(y));
+
+                    // add value labels on each bar
+                    svgBar.append("g")
+                        .selectAll("text")
+                        .data(data)
+                        .enter().append("text")
+                            .attr("transform", "translate(" + barLeftPadding + ", " + setTopPadding + ")")
+                            .attr("class", "valueLabel")
+                            .attr("x", function(d) {return x(d.new_foreign_worker_count); } )
+                            .attr("y", function(d) { return y(d.Company) + 8; })
+                            .attr("dx", -5)
+                            .attr("dy", ".36em")
+                            .attr("text-anchor", "end")
+                            .text(function(d) {return d.new_foreign_worker_count; } );
+                });
+            }
+            
+            
+            
+        }
+        
+    </script>
+</body>

@@ -1,0 +1,51 @@
+stateAbbr,applicantsCount,stateName,stateCode
+AL,598,Alabama,1
+AK,41,Alaska,2
+AZ,1392,Arizona,4
+AR,562,Arkansas,5
+CA,29562,California,6
+CO,969,Colorado,8
+CT,1175,Connecticut,9
+DE,609,Delaware,10
+FL,4013,Florida,12
+GA,4351,Georgia,13
+HI,89,Hawaii,15
+ID,145,Idaho,16
+IL,4819,Illinois,17
+IN,1005,Indiana,18
+IA,490,Iowa,19
+KS,401,Kansas,20
+KY,554,Kentucky,21
+LA,388,Louisiana,22
+ME,104,Maine,23
+MD,1645,Maryland,24
+MA,4217,Massachusetts,25
+MI,3760,Michigan,26
+MN,921,Minnesota,27
+MS,175,Mississippi,28
+MO,1090,Missouri,29
+MT,67,Montana,30
+NE,409,Nebraska,31
+NV,231,Nevada,32
+NH,255,New Hampshire,33
+NJ,9857,New Jersey,34
+NM,277,New Mexico,35
+NY,9219,New York,36
+NC,3379,North Carolina,37
+ND,138,North Dakota,38
+OH,2100,Ohio,39
+OK,331,Oklahoma,40
+OR,1359,Oregon,41
+PA,2831,Pennsylvania,42
+RI,192,Rhode Island,44
+SC,1203,South Carolina,45
+SD,66,South Dakota,46
+TN,741,Tennessee,47
+TX,16672,Texas,48
+UT,438,Utah,49
+VT,103,Vermont,50
+VA,4242,Virginia,51
+WA,6709,Washington,53
+WV,101,West Virginia,54
+WI,1376,Wisconsin,55
+WY,28,Wyoming,56

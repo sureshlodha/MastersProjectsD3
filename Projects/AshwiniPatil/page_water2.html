@@ -1,0 +1,152 @@
+<!DOCTYPE html ">
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
+<meta charset="utf-8">
+<style>
+</style>
+<!--
+iframe {
+float:left;
+margin:20px;
+}
+-->
+<head>
+	<title>Water Usage</title>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+
+</head>
+
+<body>
+	<script type="text/javascript">
+  //<!--
+  function OpenInMyFrame()
+  {
+		var var1 = document.getElementById("selectImage").value;
+    window.document.getElementById("MyFrame1").src = var1;
+  }
+	function OpenInMyFrame_2()
+	{
+		var var1 = document.getElementById("selectImage_2").value;
+		window.document.getElementById("MyFrame2").src = var1;
+	}
+  //-->
+</script>
+
+
+	<div id="holder">
+		<!-- Wrapper -->
+		<div id="wrapper">
+		<!-- Page -->
+			<div id="drop-shadow">
+				<!-- Shell -->
+				<div class="shell">
+					<!-- Header -->
+					<div id="header">
+						<div id="logo">
+							<h1><a href="page_water.html" title="Home">Water Usage </a></h1>
+							<h3>The Water USage prediction for year 2016,2017 is done using 2012-2015 monthly water usage Data</h3><br>
+							<h3>Two categories of data is predicted, one being region wise using Postal Code and the other being usage by CustomerClass</h3>
+						</div>
+					</div>
+					<!-- END Header -->
+					<!-- Wrapper-middle -->
+					<div id="wrapper-middle">
+						<!-- Navigation -->
+						<div id="navigation">
+						<!-- Navigation -->
+							<ul>
+							<li><a href="page_water.html" title="Current Usage">Current Water Usage</a></li>
+								<li><a href="page_water2.html" title="Predict Water Usage">Predict Water Usage</a></li>
+							</ul>
+						</div>
+						<!-- END Navigation -->
+						<!-- Slider -->
+					<div id="slider">
+							<ul>
+								<li>
+									<div class="content">
+										<div class="img">
+										     <iframe id="MyFrame1" name="iframe1" src="" height="350" width="450" frameborder = "1"></iframe>
+												 <iframe id="MyFrame2" name="iframe2" src="" height="350" width="450" frameborder = "1" style="float:right;display:inline;"></iframe>
+										</div>
+										<div class="content">
+															<select id="selectImage" onchange="OpenInMyFrame()" >
+														    <option hidden="true">Please select PIN CODE</option>
+														    <option value="PostalCode78754.png">78754</option>
+														    <option value="PostalCode78759.png">78759</option>
+																<option value="PostalCode78758.png">78758</option>
+																<option value="PostalCode78752.png">78752</option>
+																<option value="PostalCode78751.png">78751</option>
+																<option value="PostalCode78748.png">78748</option>
+																<option value="PostalCode78746.png">78746</option>
+																<option value="PostalCode78745.png">78745</option>
+																<option value="PostalCode78741.png">78741</option>
+																<option value="PostalCode78739.png">78739</option>
+																<option value="PostalCode78729.png">78729</option>
+																<option value="PostalCode78725.png">78725</option>
+																<option value="PostalCode78724.png">78724</option>
+																<option value="PostalCode78723.png">78723</option>
+																<option value="PostalCode78722.png">78722</option>
+																<option value="PostalCode78721.png">78721</option>
+																<option value="PostalCode78719.png">78719</option>
+																<option value="PostalCode78717.png">78717</option>
+																<option value="PostalCode78712.png">78712</option>
+																<option value="PostalCode78705.png">78705</option>
+																<option value="PostalCode78702.png">78702</option>
+																<option value="PostalCode78701.png">78701</option>
+																<option value="PostalCode78681.png">78681</option>
+																<option value="PostalCode78660.png">78660</option>
+																<option value="PostalCode78653.png">78653</option>
+																<option value="PostalCode78652.png">78652</option>
+																<option value="PostalCode78617.png">78617</option>
+																<option value="PostalCode78613.png">78613</option>
+														   </select>
+															<select id="selectImage_2" onchange="OpenInMyFrame_2()" style="float:right;display:inline;" >
+																<option hidden="true">Please select a Usage Category</option>
+																<option value="Usage_Customer_Class_Commercial.png">Commercial</option>
+																<option value="Usage_Customer_Class_Wholesale.png">Wholesale</option>
+																<option value="Usage_Customer_Class_Irrigation_-_Residential.png">Irrigation_-_Residential</option>
+																<option value="Usage_Customer_Class_Irrigation_-_Multi-Family.png">Irrigation_-_Multi-Family</option>
+																<option value="Usage_Customer_Class_Irrigation_-_City_of_Austin.png">Irrigation_-_City_of_Austin</option>
+																<option value="Usage_Customer_Class_City_of_Austin.png">City_of_Austin</option>
+																<option value="Usage_Customer_Class_Austin_Water_Utility.png">Austin_Water_Utility</option>
+															 </select>
+										</div>
+									</div>
+								</div>
+								</li>
+							</ul>
+
+							<!-- wrapper slider -->
+						</div>
+					<!-- wrapper middle -->
+					</div>
+
+				<!-- END Shell -->
+			</div>
+			<!-- END Page -->
+		</div>
+		<!-- END Wrapper -->
+	<div id="footer">
+		<div id="footer-shadow"></div>
+			<div class="shell">
+     <br>
+	 <footer>
+		 <center>
+		<h4> CMPS 296: Master's project
+		<br>Fall 2017</br>
+		Student Name: Ashwini Patil<br>
+		<br> Guide: Prof. Suresh Lodha<br><br>
+	   Data Sources:<br></h4>
+		<a href="https://data.austintexas.gov/Utilities-and-City-Services/Austin-Water-Residential-Water-Consumption/sxk7-7k6z">Residential Water Usage</a> <br>
+		<a href="https://data.austintexas.gov/Utilities-and-City-Services/Austin-Water-Commercial-Water-Consumption/5h9c-wmds">Commercial Water Usage</a><br>
+		<br>
+		</center>
+	</footer>
+					</div>
+			</div>
+		</div>
+	</div>
+	</body>
+</html>

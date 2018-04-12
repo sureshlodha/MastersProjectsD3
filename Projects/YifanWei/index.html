@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang = "en">
+    
+    
+<head>
+  <title>Global Terrorist Attacks</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="https://d3js.org/d3-time.v1.min.js"></script>
+  <script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<!--  <script src="lib/jquery.js"></script>-->
+
+</head>
+
+<body>
+    
+    <div class ="container-fluid">
+        <div class = "row" style = "height:180px; padding-top:5px; padding-bottom:5px">
+            <center>
+                <h1>World of Terrorism</h1>
+                <h4>Top 14 Deadliest Terrorist Groups</h4>
+                <h4>2000 - 2015</h4>
+                <h5>Total Incident: 87,009; Total Deaths: 207,830</h5>
+                <p>During 2000 to 2015, more than two hundreds thousands of lives perished in terrorist attack.</p>
+                <p>The top 3 deadliest terrorist groups in recent time are Islamic State of Iraq, Taliban and Boko Haram. 9 of 14 top terrorist groups are Islamic-related.</p>
+                <p>The top 5 countries that suffered most are Iraq, Afghanistan, Nigeria, Syria and Yemen.</p>
+            </center>
+        </div>
+        
+    </div>
+    
+    <div class="container-fluid">
+            <div class="col-md-6">
+            <div id ="multi_line_chart_2">
+            <script type="text/javascript" src="MultiLine_2.js"></script>
+            </div>
+            </div>
+            <div class="col-md-6">
+            <div id ="multi_line_chart_1">
+            <script type="text/javascript" src="MultiLine_1.js"></script>
+            </div>
+            </div>
+    </div>
+    
+    <div class="container-fluid">
+            <div class="col-md-6">
+            <div id ="multi_line_chart_2_2">
+            <script type="text/javascript" src="MultiLine_2_2.js"></script>
+            </div>
+            </div>
+            <div class="col-md-6">
+            <div id ="multi_line_chart_1_2">
+            <script type="text/javascript" src="MultiLine_1_2.js"></script>
+            </div>
+            </div>
+    </div>
+    
+    <div class="container-fluid">
+<!--
+        <div class = "row" style = "height:100px; padding-top:20px; padding-bottom:20px">
+            <center>
+                <h1>World of Terrorism</h1>
+                <h3>Top 14 Deadliest Terrorist Groups</h3>
+                <h3>2000 - 2015</h3>
+                <h4>Total Incident: 87,009; Total Deaths: 207,830</h4>
+                <p>There are more than one thounsand terrorist groups around the world. Here we focus on the top 14 terrorist groups that claimed most of lives during the past 15 years.</p>
+            </center>
+        </div>
+
+        
+-->
+        <div class = "row">
+            <div class="col-md-6">
+                <div id ="stack_bar_chart">
+                <script type="text/javascript" src="stack_bar_chart.js"></script>
+                </div>
+            </div>
+            <div class="col-md-6">
+            <div id ="stack_bar_chart_2">
+            <script type="text/javascript" src="stack_bar_chart_2.js"></script>
+            </div>
+            </div>
+<!--
+            <div class="col-md-6">
+                <div id ="stack_area_chart">
+                <script type="text/javascript" src="stack_area_chart.js"></script>
+                </div>
+            </div>
+<!--
+            <div class= "col-md-3">
+                <div id ="barchart">
+                    <script type="text/javascript" src="chart2.js"></script>
+                </div>
+            </div>
+-->
+        </div>
+    </div>
+    
+    <div class ="container-fluid">
+        <div class = "row" style = "height:100px; padding-top:40px; padding-bottom:15px; padding-left:60px;">
+            <div class = "col-md-6">
+                <h4>Color Scheme: 9 Islamic-related terrorist groups have verying shade of red color gradient to yellow color. The other 5 terrorist groups have varying shades of red color gradient to purple color.</h4>
+            </div>
+            <div class = "col-md-6">
+               <h4>Color Scheme: Middle-Eastern countries have purple shades; South Asian countries have green shades; African countries have blue shades; Other countries are marked with different colors.</h4>
+            </div>
+        </div>
+        
+    </div>
+    
+        <div class ="container-fluid">
+        <center>
+        <div class = "row" style = "height:300px; padding-top:40px; padding-bottom:5px; padding-left:60px; background-color: #c8cace">
+                <h4 style = "padding-bottom: 10px">Created By Yifan Wei in collaboration with Suresh Lodha</h4>
+            <div class = "col-md-3">
+                GitHub Links
+                <h5><a href = "https://github.com/erfan00/world_of_terror_6/tree/master/data">Data</a></h5>
+                <h5><a href = "https://github.com/erfan00/world_of_terror_6/blob/master/MS%20Report.pdf">Report</a></h5>
+                <h5><a href = "https://github.com/erfan00/world_of_terror_6">Code</a></h5>
+            </div>
+            <div class = "col-md-3">
+                Data Source
+                <h5><a href = "https://www.start.umd.edu/gtd/">Global Terrorism Database</a></h5>
+                <h5><a href = "http://library.duke.edu/data/collections/iterate/">International Terrorism: Attributes of Terrorist Events (ITERATE)</a></h5>
+                <h5><a href = "http://www.rand.org/nsrd/projects/terrorism-incidents.html/">Rand Database of Worldwide Terrorism Incidents (RDWTI)</a></h5>
+                <h5><a href = "http://folk.uib.no/sspje/tweed.html">Terrorism in Western Europe: Events Data (TWEED)</a></h5>
+            </div>
+             <div class = "col-md-3">
+                Related visualization links
+                <h5><a href = "http://terror.periscopic.com/">A World of Terror</a></h5>
+                <h5><a href = "http://cse512-14w.github.io/a3-chaoyu-aniket/">Global Terrorism Visualization</a></h5>
+<!--                 <h5><a href = "https://www.washingtonpost.com/graphics/world/a-history-of-terrorism-in-europe/">45 years of terrorist attacks in Europe</a><h5> -->
+                <h5><a href = "https://storymaps.esri.com/stories/terrorist-attacks/?year=2016/">2016 Terrorist Attacks</a></h5>
+                <h5><a href = "http://www.cnn.com/2016/11/16/world/global-terrorism-report/">Global Terrorism Report</a></h5> -->
+             </div> 
+                
+           
+            
+            <div class = "col-md-3">
+                References
+                <h5><a href = "https://bl.ocks.org/mbostock/3884955">Multi-Series Line Chart</a></h5>
+                <h5><a href = "https://bl.ocks.org/mbostock/3886208">Stack Bar Chart</a></h5>
+            </div>   
+        </div>
+        </center>
+        
+    </div>
+    
+    
+    
+<!--
+    <div class="container-fluid">
+            <div class="col-md-6">
+            <div id ="multi_line_chart_2">
+            <script type="text/javascript" src="MultiLine_2.js"></script>
+            </div>
+            </div>
+            <div class="col-md-6">
+            <div id ="multi_line_chart_1">
+            <script type="text/javascript" src="MultiLine_1.js"></script>
+            </div>
+            </div>
+    </div>
+-->
+</body>
+    
+    
+
+</html>

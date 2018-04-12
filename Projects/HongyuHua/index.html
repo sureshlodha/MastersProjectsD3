@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>LinkedIn Social Network Visualization</title>
+<script src="d3/d3.js"></script>
+<script scr="d3/d3.min.js"></script>
+<link rel="stylesheet" href="CSS/style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+<body>
+    <div class="jumbotron">
+        <h1 class="display-5">LinkedIn Social Network Visualization</h1>
+        <p clas="lead">LinkedIn is the world's most famous, business customer oriented social network website. It is mainly used for professional networking. LinkedIn allows members (both workers and employers) to create profiles and "connections" to each other in an online social network which may represent real-world professional relationships. However, finding the right person to introduce you to a target company is hard since the relationship between the connection and you might not be closed. Who should I conntact if I want to apply to/get info from a target company? How many connections do I have in a target company? Based on these requirements I created this visualization. This visualization will give you a whole view of the connections in a target company. It will also shows the friends' friend who works in a target company(2nd degree connections). In this way I could find the right person to contact with clearly.</p>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <h3>Search by target company: </h3>
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" id="search-input" class="form-control" placeholder="Please type in the company name." aria-label="Please type in the company name." aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button id="search-btn" class="btn btn-outline-secondary" type="button">Search</button>
+          </div>
+        </div>
+        </div>
+    <div class="container">
+        <div class="row">
+            <h3>Search by famous company tags: </h3>
+        </div>
+        <div id="buttonrow" class="row">
+            <div class="col">
+            <button type="button" id="netflix" class="btn btn-outline-secondary">
+                <img src="Images/netflix-icon.png" width="120" height="80"/>
+            </button>
+            <button type="button" id="ebay" class="btn btn-outline-secondary">
+                <img src="Images/ebay-256.png" width="120" height="80"/>
+            </button>
+            <button type="button" id="apple" class="btn btn-outline-secondary">
+                <img src="Images/social-apple-outline.png" width="120" height="80"/>
+            </button>
+            <button type="button" id="uber" class="btn btn-outline-secondary">
+                <img src="Images/uber-icon.png" width="120" height="80"/>
+            </button>
+            <button type="button" id="microsoft" class="btn btn-outline-secondary">
+                <img src="Images/microsoft-256.png" width="120" height="80"/>
+            <button type="button" id="amazon" class="btn btn-outline-secondary">
+                <img src="Images/amazon-256.png" width="120" height="80"/>
+            </button>
+            <button type="button" id="linkedin" class="btn btn-outline-secondary">
+                <img src="Images/linkedin-256.png" width="120" height="80"/>
+            </button>
+                <button type="button" id="facebook" class="btn btn-outline-secondary">
+                    <img src="Images/facebook-icon.png" width="120" height="80"/>
+                </button>
+                <button type="button" id="walmart" class="btn btn-outline-secondary">
+                    <img src="Images/walmart-icon.jpeg"  width="120" height="80"/>
+                </button>
+                <button type="button" id="airbnb" class="btn btn-outline-secondary">
+                    <img src="Images/airbnb-icon.png" width="120" height="80"/>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <button type="button" id='default-btn' class="btn btn-outline-secondary">default graph</button>
+        <svg class= "graph" width="1100" height="550" viewBox="-500 -275 1000 550"></svg>
+    </div>
+    
+        <script src="js/visualize.js"></script>>
+
+<div class="jumbotron" style="margin-bottom: 0px">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Created By:</h4>
+              <ul>
+                  <li>Hongyu Hua</li>
+                  <li><a href="https://www.linkedin.com/in/steven-hua-605512126/">LinkedIn profile</a></li>
+              </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Files included: </h4>
+                <ul>
+                    <li>
+                        <a href="https://github.com/HowieHooo/HowieHooo.github.io">Repository Link</a>
+                    </li>
+                    <li><a href="Data/FirstDegree.csv">First Degree Connections</a></li>
+                    <li><a href="Data/SecondDegree.csv">Second Degree Connections</a></li>
+                    <li><a href="Data/FullData.csv">Full refined data</a></li>
+                    <li>Other preprocessed data and original data could be found in the Data folder.</li>
+                    <li>visualize.js</li>
+                    <li>index.html</li>
+<!--
+                    <li><a href="Data/Amazon.csv">Preprocessed data for Amazon</a></li>
+                    <li><a href="Data/Apple.csv">Preprocessed data for Apple</a></li>
+                    <li><a href="Data/Uber.csv">Preprocessed data for Uber</a></li>
+                    <li><a href="Data/Netflix.csv">Preprocessed data for Netflix</a></li>
+                    <li><a href="Data/Walmart.csv">Preprocessed data for Walmart</a></li>
+                    <li><a href="Data/Microsoft.csv">Preprocessed data for Microsoft</a></li>
+                    <li><a href="Data/eBay.csv">Preprocessed data for eBay</a></li>
+                    <li><a href="Data/LinkedIn.csv">Preprocessed data for LinkedIn</a></li>
+                    <li><a href="Data/Airbnb.csv">Preprocessed data for Airbnb</a></li>
+-->
+                </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Sources:</h4>
+              <ul>
+                  <li><a href="https://d3js.org/">D3 documentation</a></li>
+                  <li><a href="https://www.linkedin.com">LinkedIn</a></li>
+                  <li><a href="https://bl.ocks.org/curran/c48b1c89157cb98e389a63c4acc240e3">Labled Force Layout in D3</a></li>
+                  <li><a href="http://bl.ocks.org/eyaler/10586116">Force directed graph with drag/zpom/hight/center (v3) </a></li>
+                  <li><a href="https://bl.ocks.org/d3noob/257c360b3650b9f0a52dd8257d7a2d73">Tooltips</a></li>
+                  <li><a href="https://bl.ocks.org/mbostock/533daf20348023dfdd76">Link Nodes By name</a></li>
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</body>
+
